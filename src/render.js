@@ -69,9 +69,9 @@ function formOverlay(g,S,h,x,y,flip){
     const up=h.atkT>6; fr(3,4,8,2,'#7a4a22'); fr(4,6,2,4,'#7a4a22'); fr(8,6,2,4,'#7a4a22');
     if(up){ fr(6,-6,2,10,'#b07a3e'); fr(5,-9,4,4,'#7d7a72'); } else { fr(6,-2,10,2,'#b07a3e'); fr(14,-4,4,4,'#7d7a72'); }
     fr(1,13,3,3,'#7a4a22'); fr(11,13,3,3,'#7a4a22'); }
-  else if(f.key==='pike'){ /* 동현워 장창병: 쇠 투구, 앞으로 든 긴 창(찌를 때 더 뻗는다) */
-    fr(12,-1,10,4,'#8d919c'); fr(13,-3,8,2,'#c7c9d1'); fr(16,-5,2,2,'#e5483a');
-    const ext=h.atkT>0?10:0; fr(14,10,14+ext,1,'#f6f2e8'); fr(27+ext,9,3,3,'#c7c9d1'); fr(26+ext,10,1,1,'#f6f2e8'); fr(10,9,3,3,'#7a4a22'); }
+  else if(f.key==='skirm'){ /* 동현워 산병: 가죽 모자와 초록 망토, 등에 멘 투창 묶음. 던질 때 팔이 앞으로 나가며 창 하나가 손에서 떠난다 */
+    fr(12,-1,10,3,'#8fa36a'); fr(13,-3,8,2,'#a9bb80'); fr(2,4,8,8,'#5f7a3a'); fr(3,12,6,2,'#4a6130');
+    if(h.atkT>0){ fr(14,6,10,1,'#b07a3e'); fr(23,5,2,2,'#c7c9d1'); } else { fr(4,-6,1,12,'#b07a3e'); fr(6,-7,1,13,'#b07a3e'); fr(3,-8,3,2,'#c7c9d1'); } }
   else if(f.key==='rocket'){ /* 동현전 로켓포: 등에 비스듬히 얹은 붉은 발사대와 로켓 세 발 */
     fr(2,0,10,3,'#9a2620'); fr(3,-2,10,3,'#e5483a'); fr(5,-4,9,3,'#e5483a'); for(let i=0;i<3;i++) fr(12+i,-4+i,2,1,'#f2b705');
     fr(1,4,3,6,'#5d5b53'); fr(3,8,6,2,'#5d5b53'); if(h.cool>50) fr(14,-6,3,3,'rgba(255,122,58,.8)'); }
@@ -110,9 +110,9 @@ function enemies(g,S,cam){
   }
 }
 /* 변신 배지: 지금 모습과 같은 배지만 흐리게(점수만) */
-const BADGE_ICON={tank:'tank',knight:'ic_knight',copter:'ic_copter',doom:'ic_doom',fly:'ic_fly',bombard:'ic_bombard',pike:'ic_pike',rocket:'ic_rocket',bship:'ic_bship'};
+const BADGE_ICON={tank:'tank',knight:'ic_knight',copter:'ic_copter',doom:'ic_doom',fly:'ic_fly',bombard:'ic_bombard',skirm:'ic_skirm',rocket:'ic_rocket',bship:'ic_bship'};
 function badge(g,S,it,x,y){
-  /* 배지는 그 모습이 온 세계의 그림이다: 전차=동현전 전차, 기사=동현워 투구·방패, 헬기=동현콥 꼬리콥터, 둠=동현둠 철모·산탄총, 초파리=동현초 초파리, 사석포=동현워 사석포, 장창병=동현워 투구·장창, 로켓포=동현전 로켓포, 전함=동현전 전함 */
+  /* 배지는 그 모습이 온 세계의 그림이다: 전차=동현전 전차, 기사=동현워 투구·방패, 헬기=동현콥 꼬리콥터, 둠=동현둠 철모·산탄총, 초파리=동현초 초파리, 사석포=동현워 사석포, 산병=동현워 가죽 모자·투창, 로켓포=동현전 로켓포, 전함=동현전 전함 */
   const f=FORMS[it.form]; if(!f) return; const dim=S.forms[S.formI]===it.form; if(dim) g.globalAlpha=0.45;
   const key=BADGE_ICON[f.key]; const bx=Math.round(x)-2, by=Math.round(y)-2;
   g.fillStyle='rgba(255,255,255,.35)'; g.fillRect(bx-1,by+13,18,3);
@@ -130,6 +130,7 @@ function items(g,S,cam){
     else if(p.kind==='rocket'){ const fl=p.vx>=0; px(g,x,p.y,6,3,'#e5483a'); px(g,fl?x+5:x,p.y+1,1,1,'#f2b705'); px(g,fl?x-3:x+6,p.y+(S.frame&1),3,2,'rgba(255,122,58,.9)'); }
     else if(p.kind==='bomb'){ px(g,x,p.y,4,4,'#231d18'); px(g,x+1,p.y-1,1,1,(S.frame>>1)&1?'#f2b705':'#ff7a3a'); }
     else if(p.kind==='spit'){ px(g,x,p.y,3,2,'#e07be0'); }
+    else if(p.kind==='javelin'){ px(g,x,p.y,8,1,'#b07a3e'); px(g,p.vx>0?x+7:x-1,p.y-1,2,3,'#c7c9d1'); }
     else if(p.kind==='shell2'){ px(g,x,p.y,4,4,'#3a3438'); px(g,x+1,p.y+1,1,1,'#9a978c'); }
     else px(g,x,p.y,3,2,'#f2b705'); }
   for(const f of S.fx){ const x=f.x-cam, k=f.t/24;

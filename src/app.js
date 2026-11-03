@@ -132,7 +132,7 @@ function drawPauseDim(){ g.fillStyle='rgba(0,0,0,.35)'; g.fillRect(0,0,canvas.wi
 const SNDMAP={jump:'jump',jump2:'jump2',stomp:'stomp',bone:'bone',heart:'heartup',hurt:'hurt',die:'die',swap:'swap',ping:'ping',zone:'zone',cannon:'cannon',boom:'cannon',arrow:'swish',punch:'swish',win:'win',over:'lose',respawn:'pop'};
 function events(){
   for(const ev of S.events){
-    if(ev.t==='atk'){ SND.play(({shell:'shot',shotgun:'shotgun',charge:'charge',rocket:'shot',salvo:'shot',lob:'shot',bomb:'paw',spit:'paw',thrust:'paw'})[ev.kind]||'paw'); }
+    if(ev.t==='atk'){ SND.play(({shell:'shot',shotgun:'shotgun',charge:'charge',rocket:'shot',salvo:'shot',lob:'shot',bomb:'paw',spit:'paw',javelin:'shot'})[ev.kind]||'paw'); }
     else if(ev.t==='hit'){ SND.play(ev.how==='stomp'?'stomp':'thud'); }
     else if(ev.t==='kill'){ SND.play('pop'); log(`${ENEMIES[ev.type].name}을(를) 쓰러뜨렸다.`); }
     else if(ev.t==='horse'){ SND.move('horse',0.6); }

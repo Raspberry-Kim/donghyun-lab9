@@ -18,8 +18,8 @@ const FORMS=[
    desc:'공중에서 X를 한 번 더 누르면 두 번 점프한다. Z로 침을 빠르게 뱉는다(사거리 3칸, 연타). 체력 2.',atk:'spit',doubleJump:true},
   {id:6,key:'bombard',name:'사석포 포동이',from:'동현워',color:'#8d6e4a',hp:3,speed:0.7,jump:0.9,
    desc:'Z로 돌을 높이 던진다(포물선, 떨어진 자리 주변 1칸까지 2 피해). 발판 위의 적도 넘겨 친다. 느리다.',atk:'lob'},
-  {id:7,key:'pike',name:'장창병 포동이',from:'동현워',color:'#c7c9d1',hp:3,speed:1.0,jump:1.0,
-   desc:'Z로 긴 창을 앞으로 찌른다(앞 1칸 반, 빠른 연타). 기사·정찰차처럼 달리는 탈것에는 2 피해. 창병과도 옆에서 겨룰 수 있다.',atk:'thrust'},
+  {id:7,key:'skirm',name:'산병 포동이',from:'동현워',color:'#8fa36a',hp:3,speed:1.1,jump:1.0,
+   desc:'Z로 투창을 던진다(살짝 포물선, 사거리 약 7칸). 장궁병·사석포처럼 멀리서 쏘는 적에게는 2 피해. 가볍고 빠르다.',atk:'javelin'},
   {id:8,key:'rocket',name:'로켓포 포동이',from:'동현전',color:'#ff7a3a',hp:3,speed:0.8,jump:0.9,
    desc:'Z로 로켓을 멀리 쏜다(사거리 15칸, 맞은 자리 주변 1칸까지 2 피해). 재장전이 아주 느리다.',atk:'rocket'},
   {id:9,key:'bship',name:'전함 포동이',from:'동현전',color:'#4a6a8a',hp:5,speed:0.75,jump:0.9,
@@ -40,7 +40,7 @@ const ENEMIES={
   heli:{name:'공격헬기',from:'동현전',w:24,h:12,speed:0.6,stomp:true,hits:2,fly:true,desc:'발판 높이에서 오가며 아래로 포탄을 떨어뜨린다. 위에서 밟거나 두 번 쳐야 떨어진다.'},
   neo:{name:'신형전차',from:'동현전',w:36,h:20,speed:0.3,stomp:false,hits:12,boss:true,desc:'붉은별 사령부의 신형전차. 스테이지 3의 마지막 보스. 밟을 수 없다. 포탄을 곧게 쏘고 세 발에 한 번은 높이 띄워 떨어뜨린다. 체력이 반 아래로 내려가면 빨라지고 돌진한다. 열두 번 쳐야 부서진다(한 번 맞으면 잠깐은 다시 맞지 않는다).'}
 };
-/* 스테이지 지시문: g(x0,x1,topRow) 땅 · p(x0,x1,row) 외나무 발판 · s(x0,x1,row) 돌 블록 · k(x0,x1) 가시(땅 위) · e(type,x) 적 · b(x,row) 뼈다귀 · h(x,row) 하트 · m(form,x,row) 변신 배지(1 전차 · 2 기사 · 3 헬기 · 4 둠 · 5 초파리 · 6 사석포 · 7 장창병 · 8 로켓포 · 9 전함) · F(x) 깃발 · zone(x) 구역 경계
+/* 스테이지 지시문: g(x0,x1,topRow) 땅 · p(x0,x1,row) 외나무 발판 · s(x0,x1,row) 돌 블록 · k(x0,x1) 가시(땅 위) · e(type,x) 적 · b(x,row) 뼈다귀 · h(x,row) 하트 · m(form,x,row) 변신 배지(1 전차 · 2 기사 · 3 헬기 · 4 둠 · 5 초파리 · 6 사석포 · 7 산병 · 8 로켓포 · 9 전함) · F(x) 깃발 · zone(x) 구역 경계
    arena:[x0,x1] 보스 싸움터(들어서면 왼쪽으로 못 돌아간다. 보스가 부서져야 깃발이 선다). 변신은 한 판에 한 번뿐이라 배지는 골라서 줍는다. */
 const STAGES=[
  {id:1,name:'포동이의 첫 산책',note:'들판(라이언·슈슈)에서 동현워 성벽(창병·장궁병)을 지나 동현전 공장지대(보병·전차)까지. 세 구역.',W:200,

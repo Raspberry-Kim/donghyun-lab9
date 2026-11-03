@@ -12,7 +12,7 @@
 <body>
 <header class="header">
   <a class="brand" href="#" aria-label="동현크 첫 화면으로"><span class="brand-main"><img class="brand-icon" src="__BRAND_ICON__" alt="" width="96" height="96">동현<span>크</span><sup>TM</sup></span><i class="brand-divider"></i><span class="brand-sub">ACTION PLATFORMER<small>코드로 변신하는 포동이의 산책</small></span></a><a class="doi-badge" href="https://doi.org/10.5281/zenodo.23914027" target="_blank" rel="noopener" aria-label="동현크 Zenodo DOI 10.5281/zenodo.23914027" title="Zenodo DOI (모든 버전)"><b>DOI</b><span>10.5281/zenodo.23914027</span></a>
-  <div class="edition">v0.08<button id="sound" class="icon-btn" aria-label="효과음 켜기·끄기" title="효과음 (M)" aria-pressed="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="snd-on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="snd-off" d="m16 9 6 6m0-6-6 6"/></svg></button><button id="theme" class="icon-btn" aria-label="밝은 화면과 어두운 화면 전환" title="화면 전환" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button></div>
+  <div class="edition">v0.09<button id="sound" class="icon-btn" aria-label="효과음 켜기·끄기" title="효과음 (M)" aria-pressed="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="snd-on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="snd-off" d="m16 9 6 6m0-6-6 6"/></svg></button><button id="theme" class="icon-btn" aria-label="밝은 화면과 어두운 화면 전환" title="화면 전환" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button></div>
 </header>
 <main>
 <!-- SERIES-NAV-START -->
@@ -71,14 +71,14 @@
   </section>
 
   <section id="tab-protocol" class="tab-panel document" hidden>
-    <div class="doc-heading"><div class="eyebrow">SORTIE I/O · v0.08</div><h2>출전은 동현랭으로, 달리기는 키보드나 게임패드로.</h2><p>동현랭 프로그램이 출력한 정수를 차례로 읽는다. 명령 번호 하나 뒤에 값 하나가 온다. 마지막에 <code>6</code>을 출력해야 산책길에 나간다. 출전한 뒤에는 동현랭을 쓰지 않는다.</p></div>
+    <div class="doc-heading"><div class="eyebrow">SORTIE I/O · v0.09</div><h2>출전은 동현랭으로, 달리기는 키보드나 게임패드로.</h2><p>동현랭 프로그램이 출력한 정수를 차례로 읽는다. 명령 번호 하나 뒤에 값 하나가 온다. 마지막에 <code>6</code>을 출력해야 산책길에 나간다. 출전한 뒤에는 동현랭을 쓰지 않는다.</p></div>
     <div class="table-wrap"><table><thead><tr><th>명령</th><th>하는 일</th><th>값</th><th>기본값</th></tr></thead><tbody>
       <tr><td>1</td><td>목숨 수</td><td>1~99 · <b>0은 무적</b>(목숨이 무한이고 적에게 맞아도 체력이 줄지 않는다. 구덩이에 빠지면 제자리에서 다시 시작)</td><td>3</td></tr>
-      <tr><td>2</td><td>시작 변신</td><td>1 전차(동현전) · 2 기사(동현워) · 3 헬기(동현콥) · 4 둠(동현둠) · 5 초파리(동현초) · 6 사석포(동현워) · 7 장창병(동현워) · 8 로켓포(동현전) · 9 전함(동현전). <b>한 가지만</b> 고를 수 있고 처음부터 그 모습으로 나선다. 쓰지 않으면 포동이로 나서서 스테이지의 <b>변신 배지</b>를 주워 변신한다. 목숨을 잃으면 여기서 정한 모습으로 돌아온다</td><td>없음</td></tr>
+      <tr><td>2</td><td>시작 변신</td><td>1 전차(동현전) · 2 기사(동현워) · 3 헬기(동현콥) · 4 둠(동현둠) · 5 초파리(동현초) · 6 사석포(동현워) · 7 산병(동현워) · 8 로켓포(동현전) · 9 전함(동현전). <b>한 가지만</b> 고를 수 있고 처음부터 그 모습으로 나선다. 쓰지 않으면 포동이로 나서서 스테이지의 <b>변신 배지</b>를 주워 변신한다. 목숨을 잃으면 여기서 정한 모습으로 돌아온다</td><td>없음</td></tr>
       <tr><td>3</td><td>스테이지</td><td>1 포동이의 첫 산책 · 2 노을 진 성 안뜰 · 3 붉은별 사령부로(마지막에 신형전차 보스). 출발 스테이지만 고른다. 깃발에 닿으면 다음 스테이지로 이어지고 3을 깨면 끝난다</td><td>1</td></tr>
       <tr><td>6</td><td>출전</td><td>값 없음 · 반드시 마지막에</td><td>—</td></tr>
     </tbody></table></div>
-    <div class="doc-columns"><div><h3>고정된 조건</h3><p><b>변신 단추는 없다.</b> 변신은 스테이지에 놓인 배지(전차·기사·헬기·둠·초파리·사석포·장창병·로켓포·전함)를 주울 때만 일어나고, 다른 배지를 주우면 또 그 모습으로 바뀐다. 지금과 같은 모습의 배지는 300점만 준다. 목숨을 잃으면 출전 명령 2로 정한 시작 모습(기본은 포동이)으로 돌아온다. 깃발을 넘길 때의 모습은 다음 스테이지로 이어진다. 맞으면 체력이 먼저 줄고, 체력이 0이 되면 목숨 하나를 잃고 가까운 지점(각 구역 입구)에서 다시 시작한다. 깃발에 닿으면 점수와 모습은 그대로, 목숨은 출전 설정값으로 다시 채워 다음 스테이지로 간다. 원작에 있던 오락실 미니게임은 두지 않고 플랫폼 스테이지만 있다.</p><p>명령 순서는 자유지만 예제는 <b>목숨 → 시작 변신 → 스테이지 → 출전</b> 차례로 적었다. 명령이 아닌 정수가 나오거나, 값이 범위를 벗어나거나, 6 뒤에 정수가 더 나오면 출전하지 않고 오류를 알려 준다.</p></div>
+    <div class="doc-columns"><div><h3>고정된 조건</h3><p><b>변신 단추는 없다.</b> 변신은 스테이지에 놓인 배지(전차·기사·헬기·둠·초파리·사석포·산병·로켓포·전함)를 주울 때만 일어나고, 다른 배지를 주우면 또 그 모습으로 바뀐다. 지금과 같은 모습의 배지는 300점만 준다. 목숨을 잃으면 출전 명령 2로 정한 시작 모습(기본은 포동이)으로 돌아온다. 깃발을 넘길 때의 모습은 다음 스테이지로 이어진다. 맞으면 체력이 먼저 줄고, 체력이 0이 되면 목숨 하나를 잃고 가까운 지점(각 구역 입구)에서 다시 시작한다. 깃발에 닿으면 점수와 모습은 그대로, 목숨은 출전 설정값으로 다시 채워 다음 스테이지로 간다. 원작에 있던 오락실 미니게임은 두지 않고 플랫폼 스테이지만 있다.</p><p>명령 순서는 자유지만 예제는 <b>목숨 → 시작 변신 → 스테이지 → 출전</b> 차례로 적었다. 명령이 아닌 정수가 나오거나, 값이 범위를 벗어나거나, 6 뒤에 정수가 더 나오면 출전하지 않고 오류를 알려 준다.</p></div>
     <div><h3>예시</h3><pre class="code-example">나는 동현이냐?
   ㅋㅋ 목숨 10
   뿡뿡 도옹~뿡뿡뿡~뿡뿡 도오오오오오오오오옹~뿡뿡뿡
@@ -94,7 +94,7 @@
     <div class="doc-columns"><div><p class="input-note">머리글 오른쪽에 붙은 네 아이콘(키보드·마우스·게임패드·전체 화면 FULL)은 입력 표식이다. 켜진 것만 이 실험실에서 쓸 수 있다: <b>키보드·마우스·게임패드·전체 화면</b>. 아이콘에 마우스를 올리거나 손을 대면 풍선 도움말이 뜬다.</p><p class="input-note"><b>전체 화면</b>: 출전한 뒤 산책길 아래 <b>전체 화면</b> 단추를 누르면 게임 화면이 비율을 지키며 화면을 꽉 채운다. 원래 화면으로 돌아오려면 오른쪽 위 <b>✕ 전체 화면 닫기</b>를 누른다. 요소 전체 화면을 못 쓰는 기기(iPhone Safari)에서는 창을 가득 채우는 방식으로 대신한다.</p><h3>키보드</h3><table class="key-table"><tbody>
       <tr><td><span class="kbd-arrows"><kbd>←</kbd><kbd>→</kbd></span></td><td>달리기. 메뉴에서는 <kbd>↑</kbd><kbd>↓</kbd>로 고른다</td></tr>
       <tr><td><kbd>X</kbd></td><td>점프. 길게 누르면 더 높이 뛴다. 초파리 모습은 공중에서 한 번 더 뛴다. 메뉴에서는 확인</td></tr>
-      <tr><td><kbd>Z</kbd></td><td>공격. 기본 포동이는 앞발 치기, 전차는 포탄, 기사는 돌격, 헬기는 폭탄 떨어뜨리기, 둠은 산탄총, 초파리는 침 연사, 사석포는 돌 던지기, 장창병은 긴 창 찌르기, 로켓포는 로켓, 전함은 함포 두 발. 메뉴에서는 취소</td></tr>
+      <tr><td><kbd>Z</kbd></td><td>공격. 기본 포동이는 앞발 치기, 전차는 포탄, 기사는 돌격, 헬기는 폭탄 떨어뜨리기, 둠은 산탄총, 초파리는 침 연사, 사석포는 돌 던지기, 산병은 투창 던지기, 로켓포는 로켓, 전함은 함포 두 발. 메뉴에서는 취소</td></tr>
             <tr><td><kbd>A</kbd></td><td>지금 모습의 설명을 화면에 띄운다</td></tr>
       <tr><td><kbd>M</kbd></td><td>효과음 켜기·끄기(머리말 스피커 단추와 같다)</td></tr>
       <tr><td><kbd>Enter</kbd></td><td>메뉴: 계속 · 변신 설명 · 저장 · 불러오기 · 포기하고 출전 준비로. 메뉴가 열린 동안 게임은 멈춘다</td></tr>
@@ -108,7 +108,7 @@
       <li>보스: 스테이지 3 끝 사령부 앞마당에 동현전의 신형전차가 있다. 싸움터에 들어서면 왼쪽으로 돌아갈 수 없고, 열두 번 쳐서 부숴야 깃발이 선다. 포탄을 곧게 쏘고 세 발에 한 번은 높이 띄워 떨어뜨리며, 체력이 반 아래면 빨라지고 돌진한다. 밟을 수 없다.</li>
       <li>밟기: 라이언·슈슈·보병·장궁병·정찰차는 위에서 밟을 수 있고 공격헬기는 발판에서 뛰어 위에서 밟는다. 창병은 창 때문에, 전차·사석포·로켓포·신형전차는 밟히지 않으니 공격으로만 쓰러뜨린다. 기사는 밟아도 한 번만 깎인다.</li>
       <li>점수: 적 100~500, 신형전차 3000, 뼈다귀 100, 변신 배지 300, 하트는 체력 1(200점). 깃발에 닿으면 1000점에 시간 보너스(빠를수록 많이)와 남은 목숨마다 500점을 더한다.</li>
-      <li>변신: 모습마다 속도·점프·체력·공격이 다르다. 배지는 그 모습이 온 세계의 그림이다(동현전 전차·로켓포·전함 · 동현워 투구와 방패·사석포·장창 · 동현콥 꼬리콥터 · 동현둠 철모 · 동현초 초파리). 전함은 철갑이라 가시에 다치지 않고, 장창병의 창은 기사·정찰차에 2 피해, 사석포의 돌·로켓포의 로켓·헬기의 폭탄·전함의 함포는 떨어진 자리 주변까지 친다. 배지를 줍는 순간 그 모습의 체력으로 가득 찬다. 변신 단추는 없고 배지로만 바뀐다. 목숨을 잃으면 시작 모습으로 돌아온다.</li>
+      <li>변신: 모습마다 속도·점프·체력·공격이 다르다. 배지는 그 모습이 온 세계의 그림이다(동현전 전차·로켓포·전함 · 동현워 투구와 방패·사석포·투창 · 동현콥 꼬리콥터 · 동현둠 철모 · 동현초 초파리). 전함은 철갑이라 가시에 다치지 않고, 산병의 투창은 장궁병·사석포에 2 피해, 사석포의 돌·로켓포의 로켓·헬기의 폭탄·전함의 함포는 떨어진 자리 주변까지 친다. 배지를 줍는 순간 그 모습의 체력으로 가득 찬다. 변신 단추는 없고 배지로만 바뀐다. 목숨을 잃으면 시작 모습으로 돌아온다.</li>
       <li>발판은 바닥에서 두 칸 위에 있어 점프가 가장 낮은 전차 포동이도 올라간다. 바늘 위에는 반드시 발판이 있으니 전차라도 위로 돌아갈 수 있다.</li>
       <li>저장: Enter 메뉴에서 브라우저 칸 3개나 .dhsave 파일로 판을 저장하고, 출전 준비 화면이나 메뉴에서 불러온다. 동현전·동현워와 같은 방식이다.</li>
     </ul></div></div>
@@ -121,13 +121,13 @@
   <section id="tab-about" class="tab-panel document" hidden>
     <div class="doc-heading"><div class="eyebrow">WHAT IS NEW, WHAT IS BORROWED</div><h2>구조만 참고하고, 그림·지도·글·코드는 새로 만들었다.</h2><p>동현크는 게임보이용 횡스크롤 액션 게임 「크레용 신짱 4」(1996)의 큰 틀(달리고 뛰는 스테이지, 여러 모습으로 바꿔 가며 나아가는 구성)을 참고한 팬 실험이다.</p></div>
     <div class="science-block"><span class="index">01</span><div><h3>원작의 그림·소리·지도·글은 담지 않았다.</h3><p>원작의 그래픽, 음악·효과음, 스테이지 배치, 대사와 캐릭터는 하나도 쓰지 않는다. 화면의 모든 도트 그림과 스테이지, 효과음은 동현크 코드로 새로 만들었다. 원작의 오락실 미니게임도 두지 않았다.</p></div></div>
-    <div class="science-block"><span class="index">02</span><div><h3>등장인물은 모두 실험실 식구다.</h3><p>주인공 포동이는 실험실의 강아지다. 적으로는 동현파의 라이언과 슈슈, 동현전의 보병·전차·정찰차·로켓포·공격헬기와 신형전차(보스), 동현워의 창병·장궁병·기사·사석포가 나온다. 스테이지의 세 구역은 각각 동현파·동현워·동현전의 식구가 지킨다. 변신은 동현전(전차·로켓포·전함)·동현워(기사·사석포·장창병)·동현콥·동현둠·동현초에서 빌려 왔다.</p></div></div>
+    <div class="science-block"><span class="index">02</span><div><h3>등장인물은 모두 실험실 식구다.</h3><p>주인공 포동이는 실험실의 강아지다. 적으로는 동현파의 라이언과 슈슈, 동현전의 보병·전차·정찰차·로켓포·공격헬기와 신형전차(보스), 동현워의 창병·장궁병·기사·사석포가 나온다. 스테이지의 세 구역은 각각 동현파·동현워·동현전의 식구가 지킨다. 변신은 동현전(전차·로켓포·전함)·동현워(기사·사석포·산병)·동현콥·동현둠·동현초에서 빌려 왔다.</p></div></div>
     <div class="science-block"><span class="index">03</span><div><h3>상표와 관계</h3><p>크레용 신짱은 우스이 요시토·후타바샤의 저작물이며, 게임보이판 「크레용 신짱 4」는 반다이가 발매했다. 동현크는 이들과 관계가 없고, 승인이나 후원을 받지 않았다.</p></div></div>
     <div class="science-block"><span class="index">04</span><div><h3>코드와 글꼴의 이용 조건</h3><p>동현크 코드는 MIT, 글꼴(검은고딕 Black Han Sans · Pretendard · 나눔고딕코딩)은 SIL Open Font License를 따른다. 동현랭 실행기는 동현랭 저장소의 MIT 코드를 그대로 쓴다. 포동이의 모습과 이름에 대한 권리는 코드 라이선스와 별개로 만든 사람에게 있다.</p></div></div>
     <aside class="maker-note"><span class="eyebrow">만든 사람</span><p>인하대학교 의과대학 김동현 교수는 백신학·감염학을 연구한다. 동현크는 동현랭 시리즈의 아홉 번째 프로젝트이다.</p></aside>
   </section>
 </main>
-<footer><span>동현크 v0.08 · 인하대학교 의과대학 교수 김동현</span><span>1인용 · 플랫폼 액션 · 스테이지 3 · 보스 1</span><span><a href="https://raspberry-kim.github.io/donghyun-lang/" target="_blank" rel="noopener">동현랭</a> · <a href="https://github.com/Raspberry-Kim/donghyun-lang" target="_blank" rel="noopener">동현랭 GitHub</a> · <a href="https://github.com/Raspberry-Kim/donghyun-lab9" target="_blank" rel="noopener">동현크 GitHub</a></span></footer>
+<footer><span>동현크 v0.09 · 인하대학교 의과대학 교수 김동현</span><span>1인용 · 플랫폼 액션 · 스테이지 3 · 보스 1</span><span><a href="https://raspberry-kim.github.io/donghyun-lang/" target="_blank" rel="noopener">동현랭</a> · <a href="https://github.com/Raspberry-Kim/donghyun-lang" target="_blank" rel="noopener">동현랭 GitHub</a> · <a href="https://github.com/Raspberry-Kim/donghyun-lab9" target="_blank" rel="noopener">동현크 GitHub</a></span></footer>
 <script src="./game.js"></script>
 <script>
 /* 입력 표식 풍선 도움말 */

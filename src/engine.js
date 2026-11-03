@@ -136,7 +136,7 @@ function step(S,keys){
     if(rectSolid(S,p.x,p.y,p.w,p.h,0,false)){
       if(p.kind==='bomb'&&p.vy>0&&!rectSolid(S,p.x,p.y-p.vy,p.w,p.h,0,false)){ p.y=Math.floor((p.y+p.h)/T)*T-p.h-0.01; p.vy=0; p.vx*=0.9; } // 폭탄은 바닥에 떨어지면 구른다
       else { p.alive=false; if(p.splash) boom(S,p); else addFx(S,'puff',p.x,p.y); continue; } }
-    if(p.owner==='hero'){ for(const e of S.enemies){ if(e.alive&&overlap(p,e)){ if(p.splash){ p.alive=false; boom(S,p); } else { hitEnemy(S,e,p.dmg,'shot'); if(!p.pierce) p.alive=false; } break; } } }
+    if(p.owner==='hero'){ for(const e of S.enemies){ if(e.alive&&overlap(p,e)){ if(p.splash){ p.alive=false; boom(S,p); } else { hitEnemy(S,e,(p.bonus&&p.bonus[e.type])||p.dmg,'shot'); if(!p.pierce) p.alive=false; } break; } } }
     else if(h.inv<=0&&!h.dead&&overlap(p,h)&&h.charge<=0){ p.alive=false; hurt(S,h,1,({arrow:'arrow',stone:'stone',rocket:'rocketshot'})[p.kind]||'shell'); }
   }
   S.shots=S.shots.filter(p=>p.alive);
@@ -158,8 +158,8 @@ function attack(S,h,f){
   else if(k==='spit'){ h.cool=9; h.atkT=8; S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-3,y:h.y+6,w:3,h:2,vx:h.dir*4.2,vy:0,life:12,dmg:1,alive:true,kind:'spit'}); }
   /* 사석포: 돌을 높이 던진다(포물선, 떨어진 자리 주변을 친다) */
   else if(k==='lob'){ h.cool=46; S.shots.push({owner:'hero',x:h.x+h.w/2-2,y:h.y-4,w:5,h:5,vx:h.dir*2.0,vy:-4.6,g:GRAV,life:120,dmg:2,alive:true,kind:'stone',splash:16}); }
-  /* 장창병: 긴 창 찌르기(앞 24px). 달리는 탈것(기사·정찰차)에는 2 피해 */
-  else if(k==='thrust'){ h.cool=13; h.atkT=12; const box={x:h.dir>0?h.x+h.w:h.x-24,y:h.y+5,w:24,h:8}; for(const e of S.enemies) if(e.alive&&overlap(box,e)) hitEnemy(S,e,(e.type==='knight'||e.type==='recon')?2:1,'thrust'); h.pawBox=box; }
+  /* 산병(동현워 정예 산병): 투창. 살짝 포물선으로 날아가 사거리 약 7칸. 멀리서 쏘는 적(장궁병·사석포)에는 2 피해 */
+  else if(k==='javelin'){ h.cool=22; h.atkT=10; S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-8,y:h.y+3,w:8,h:2,vx:h.dir*3.4,vy:-1.6,g:GRAV*0.5,life:48,dmg:1,bonus:{archer:2,bombard:2},alive:true,kind:'javelin'}); }
   /* 로켓포: 곧게 멀리 나는 로켓, 맞은 자리 주변을 친다 */
   else if(k==='rocket'){ h.cool=70; S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-6,y:h.y+5,w:6,h:3,vx:h.dir*4.5,vy:0,life:55,dmg:2,alive:true,kind:'rocket',splash:18}); }
   /* 전함: 함포 두 발(멀리·가까이 포물선) */
