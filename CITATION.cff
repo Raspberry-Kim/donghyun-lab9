@@ -17,22 +17,26 @@ abstract: >-
   platformer for one player. The number of lives (0 = invincible), the set of
   up to four transformations and the stage are chosen only through programs
   written in the esoteric programming language Donghyun-lang; the stage itself
-  is played with the keyboard or on-screen buttons, using the same key layout
-  as Donghyunjeon and Donghyunwar. The hero is Podong-i, the author's dog;
-  enemies and transformations are borrowed from the other Donghyun
-  laboratories. Its overall structure (run-and-jump stages, switchable forms)
-  is inspired by the Game Boy game Crayon Shin-chan 4 (1996); it contains none
-  of that game's graphics, sound, level layouts, text or characters, and omits
-  its arcade mini-games. Crayon Shin-chan is the work of Yoshito Usui and
-  Futabasha; this work is not affiliated with or endorsed by them or Bandai.
-  The MIT license applies to the application code, documentation and original
-  artwork only; the fonts are under the SIL Open Font License, and the name and
-  likeness of Podong-i remain with the author. See LICENSE and CREDITS.md.
+  is played with the keyboard, with a Bluetooth or USB gamepad through the
+  browser Gamepad API (Nintendo layout: A = X key jump, B = Z key attack, X =
+  S key transform, Y = A key info, d-pad or left stick = left/right, + =
+  Enter), or with on-screen buttons, using the same key layout as Donghyunjeon
+  and Donghyunwar. The hero is Podong-i, the author's dog; enemies and
+  transformations are borrowed from the other Donghyun laboratories. Its
+  overall structure (run-and-jump stages, switchable forms) is inspired by the
+  Game Boy game Crayon Shin-chan 4 (1996); it contains none of that game's
+  graphics, sound, level layouts, text or characters, and omits its arcade
+  mini-games. Crayon Shin-chan is the work of Yoshito Usui and Futabasha; this
+  work is not affiliated with or endorsed by them or Bandai. The MIT license
+  applies to the application code, documentation and original artwork only;
+  the fonts are under the SIL Open Font License, and the name and likeness of
+  Podong-i remain with the author. See LICENSE and CREDITS.md.
 keywords:
   - platform game
   - pixel art
   - esoteric programming language
   - JavaScript
+  - gamepad
 references:
   - type: software
     title: "Donghyun-lang (동현랭): a Korean esoteric programming language with a browser playground"
