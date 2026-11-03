@@ -12,7 +12,7 @@
 <body>
 <header class="header">
   <a class="brand" href="#" aria-label="동현크 첫 화면으로"><span class="brand-main"><img class="brand-icon" src="__BRAND_ICON__" alt="" width="96" height="96">동현<span>크</span><sup>TM</sup></span><i class="brand-divider"></i><span class="brand-sub">ACTION PLATFORMER<small>코드로 변신하는 포동이의 산책</small></span></a><a class="doi-badge" href="https://doi.org/10.5281/zenodo.23914027" target="_blank" rel="noopener" aria-label="동현크 Zenodo DOI 10.5281/zenodo.23914027" title="Zenodo DOI (모든 버전)"><b>DOI</b><span>10.5281/zenodo.23914027</span></a>
-  <div class="edition">v0.03<button id="sound" class="icon-btn" aria-label="효과음 켜기·끄기" title="효과음 (M)" aria-pressed="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="snd-on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="snd-off" d="m16 9 6 6m0-6-6 6"/></svg></button><button id="theme" class="icon-btn" aria-label="밝은 화면과 어두운 화면 전환" title="화면 전환" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button></div>
+  <div class="edition">v0.04<button id="sound" class="icon-btn" aria-label="효과음 켜기·끄기" title="효과음 (M)" aria-pressed="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="snd-on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="snd-off" d="m16 9 6 6m0-6-6 6"/></svg></button><button id="theme" class="icon-btn" aria-label="밝은 화면과 어두운 화면 전환" title="화면 전환" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button></div>
 </header>
 <main>
 <!-- SERIES-NAV-START -->
@@ -68,7 +68,7 @@
   </section>
 
   <section id="tab-protocol" class="tab-panel document" hidden>
-    <div class="doc-heading"><div class="eyebrow">SORTIE I/O · v0.03</div><h2>출전은 동현랭으로, 달리기는 키보드나 게임패드로.</h2><p>동현랭 프로그램이 출력한 정수를 차례로 읽는다. 명령 번호 하나 뒤에 값 하나가 온다. 마지막에 <code>6</code>을 출력해야 산책길에 나간다. 출전한 뒤에는 동현랭을 쓰지 않는다.</p></div>
+    <div class="doc-heading"><div class="eyebrow">SORTIE I/O · v0.04</div><h2>출전은 동현랭으로, 달리기는 키보드나 게임패드로.</h2><p>동현랭 프로그램이 출력한 정수를 차례로 읽는다. 명령 번호 하나 뒤에 값 하나가 온다. 마지막에 <code>6</code>을 출력해야 산책길에 나간다. 출전한 뒤에는 동현랭을 쓰지 않는다.</p></div>
     <div class="table-wrap"><table><thead><tr><th>명령</th><th>하는 일</th><th>값</th><th>기본값</th></tr></thead><tbody>
       <tr><td>1</td><td>목숨 수</td><td>1~99 · <b>0은 무적</b>(목숨이 무한이고 적에게 맞아도 체력이 줄지 않는다. 구덩이에 빠지면 제자리에서 다시 시작)</td><td>3</td></tr>
       <tr><td>2</td><td>시작 변신</td><td>1 전차(동현전) · 2 기사(동현워) · 3 헬기(동현콥) · 4 둠(동현둠) · 5 초파리(동현초). <b>한 가지만</b> 고를 수 있고 처음부터 그 모습으로 나선다. 쓰지 않으면 포동이로 나서서 스테이지의 <b>변신 배지</b>를 주워 변신한다</td><td>없음</td></tr>
@@ -105,7 +105,8 @@
       <li>보스: 스테이지 3 끝 사령부 앞마당에 동현전의 신형전차가 있다. 싸움터에 들어서면 왼쪽으로 돌아갈 수 없고, 열두 번 쳐서 부숴야 깃발이 선다. 포탄을 곧게 쏘고 세 발에 한 번은 높이 띄워 떨어뜨리며, 체력이 반 아래면 빨라지고 돌진한다. 밟을 수 없다.</li>
       <li>밟기: 라이언·슈슈·보병은 위에서 밟을 수 있다. 창병은 창 때문에, 전차·신형전차는 밟히지 않으니 공격으로만 쓰러뜨린다. 기사는 밟아도 한 번만 깎인다.</li>
       <li>점수: 적 100~500, 신형전차 3000, 뼈다귀 100, 변신 배지 300, 하트는 체력 1(200점). 깃발에 닿으면 1000점에 시간 보너스(빠를수록 많이)와 남은 목숨마다 500점을 더한다.</li>
-      <li>변신: 모습마다 속도·점프·체력·공격이 다르다. 배지를 줍는 순간 그 모습의 체력으로 가득 찬다. 한 번뿐이고 되돌릴 수 없다.</li>
+      <li>변신: 모습마다 속도·점프·체력·공격이 다르다. 배지는 그 모습이 온 세계의 그림이다(동현전 전차 · 동현워 투구와 방패 · 동현콥 꼬리콥터 · 동현둠 철모 · 동현초 초파리). 배지를 줍는 순간 그 모습의 체력으로 가득 찬다. 한 번뿐이고 되돌릴 수 없다.</li>
+      <li>발판은 바닥에서 두 칸 위에 있어 점프가 가장 낮은 전차 포동이도 올라간다. 바늘 위에는 반드시 발판이 있으니 전차라도 위로 돌아갈 수 있다.</li>
       <li>저장: Enter 메뉴에서 브라우저 칸 3개나 .dhsave 파일로 판을 저장하고, 출전 준비 화면이나 메뉴에서 불러온다. 동현전·동현워와 같은 방식이다.</li>
     </ul></div></div>
     <h3>변신</h3>
@@ -123,6 +124,6 @@
     <aside class="maker-note"><span class="eyebrow">만든 사람</span><p>인하대학교 의과대학 김동현 교수는 백신학·감염학을 연구한다. 동현크는 동현랭 시리즈의 아홉 번째 프로젝트이다.</p></aside>
   </section>
 </main>
-<footer><span>동현크 v0.03 · 인하대학교 의과대학 교수 김동현</span><span>1인용 · 플랫폼 액션 · 스테이지 3 · 보스 1</span><span><a href="https://raspberry-kim.github.io/donghyun-lang/" target="_blank" rel="noopener">동현랭</a> · <a href="https://github.com/Raspberry-Kim/donghyun-lang" target="_blank" rel="noopener">동현랭 GitHub</a> · <a href="https://github.com/Raspberry-Kim/donghyun-lab9" target="_blank" rel="noopener">동현크 GitHub</a></span></footer>
+<footer><span>동현크 v0.04 · 인하대학교 의과대학 교수 김동현</span><span>1인용 · 플랫폼 액션 · 스테이지 3 · 보스 1</span><span><a href="https://raspberry-kim.github.io/donghyun-lang/" target="_blank" rel="noopener">동현랭</a> · <a href="https://github.com/Raspberry-Kim/donghyun-lang" target="_blank" rel="noopener">동현랭 GitHub</a> · <a href="https://github.com/Raspberry-Kim/donghyun-lab9" target="_blank" rel="noopener">동현크 GitHub</a></span></footer>
 <script src="./game.js"></script>
 </body></html>

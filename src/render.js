@@ -91,12 +91,14 @@ function enemies(g,S,cam){
   }
 }
 /* 변신 배지 12×12: 모습 색의 둥근 칸에 첫 글자. 이미 변신했으면 흐리게(점수만) */
-const BADGE_CH={tank:'전',knight:'기',copter:'헬',doom:'둠',fly:'초'};
+const BADGE_ICON={tank:'tank',knight:'ic_knight',copter:'ic_copter',doom:'ic_doom',fly:'ic_fly'};
 function badge(g,S,it,x,y){
+  /* 배지는 그 모습이 온 세계의 그림이다: 전차=동현전 전차, 기사=동현워 투구·방패, 헬기=동현콥 꼬리콥터, 둠=동현둠 철모·산탄총, 초파리=동현초 초파리 */
   const f=FORMS[it.form]; if(!f) return; const dim=S.formI>0; if(dim) g.globalAlpha=0.45;
-  px(g,x+1,y,10,12,'#2e2a38'); px(g,x,y+1,12,10,'#2e2a38'); px(g,x+2,y+1,8,10,f.color); px(g,x+1,y+2,10,8,f.color); px(g,x+2,y+2,2,2,'rgba(255,255,255,.7)');
-  g.font='bold 8px Pretendard, sans-serif'; g.textBaseline='top'; g.textAlign='center'; g.fillStyle='#fff'; g.fillText(BADGE_CH[f.key]||'변',x+6,y+2); g.textAlign='left';
-  if(!dim&&((S.frame>>3)&1)){ px(g,x+5,y-3,2,2,'#f2b705'); }
+  const key=BADGE_ICON[f.key]; const bx=Math.round(x)-2, by=Math.round(y)-2;
+  g.fillStyle='rgba(255,255,255,.35)'; g.fillRect(bx-1,by+13,18,3);
+  if(key) drawSprite(g,key,bx,by,false); else { px(g,bx+2,by+2,12,12,f.color); }
+  if(!dim&&((S.frame>>3)&1)){ px(g,bx+14,by-2,2,2,'#f2b705'); px(g,bx,by+1,2,2,'#f2b705'); }
   g.globalAlpha=1;
 }
 function items(g,S,cam){
