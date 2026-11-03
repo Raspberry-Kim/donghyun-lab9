@@ -158,7 +158,14 @@ function draw(g,S){
   const cam=Math.round(S.camX);
   background(g,S,cam); tiles(g,S,cam); items(g,S,cam); enemies(g,S,cam); hero(g,S,cam); hud(g,S);
 }
-/* 출전 전 미리보기: 스테이지 첫 화면에 포동이를 세운다 */
-function preview(g,S){ draw(g,S); }
-root.Render={draw,preview,VW,VH};
+/* 출전 전 미리보기: 스테이지 첫 화면에 포동이를 세우고, 코드가 정한 설정을 카드로 띄운다(예제를 바꾸면 바로 바뀐다) */
+function preview(g,S,pv){ draw(g,S); if(!pv) return;
+  const w=VW-24, h=46, x=12, y=18;
+  g.fillStyle='rgba(20,18,30,.72)'; g.fillRect(x,y,w,h); px(g,x,y,w,2,pv.color||'#f6ecd6');
+  g.textBaseline='top'; g.textAlign='left';
+  g.font='bold 8px Pretendard, sans-serif'; g.fillStyle='#ffe9a8'; g.fillText('미리보기 · '+pv.title,x+8,y+6);
+  g.font='8px Pretendard, sans-serif'; g.fillStyle='#fff'; g.fillText(pv.lives,x+8,y+18); g.fillText(pv.form,x+8,y+30);
+  if(pv.icon){ try{ const c=SP.make(pv.icon,false); const s=Math.min(2,Math.floor((h-12)/c.height)); g.drawImage(c,x+w-8-c.width*s,y+Math.round((h-c.height*s)/2),c.width*s,c.height*s); }catch(e){} }
+}
+root.Render={draw,preview,VW,VH,BADGE_ICON};
 })(window);

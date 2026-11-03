@@ -101,7 +101,10 @@ function sortie(){
 /* ---------- 상태·화면 ---------- */
 let S=null, previewS=null, mode='setup', paused=false, menu=null;
 const keys={left:false,right:false,jump:false,jumpPressed:false,attack:false,attackPressed:false,swap:false};
-function preview(c){ previewS=E.newGame({stage:c.stage,lives:c.lives,forms:c.forms,seed:1}); previewS.hero.inv=0; $('#day').textContent=`스테이지 ${c.stage} · ${STAGES[c.stage-1].name}`; $('#tile-info').textContent=STAGES[c.stage-1].note; fit(); }
+let previewCard=null;
+function preview(c){ previewS=E.newGame({stage:c.stage,lives:c.lives,forms:c.forms,seed:1}); previewS.hero.inv=0;
+  const f=c.forms.length?FORMS[c.forms[0]]:null; const ic=f?(R.BADGE_ICON?R.BADGE_ICON[f.key]:null):null;
+  previewCard={title:`스테이지 ${c.stage} · ${STAGES[c.stage-1].name}`,lives:c.lives===0?'목숨 무적 · 무한':'목숨 '+(c.lives<=10?'♥'.repeat(c.lives):'♥×'+c.lives),form:'시작 모습 '+formList(c),icon:ic,color:f?f.color:'#f6ecd6'}; $('#day').textContent=`스테이지 ${c.stage} · ${STAGES[c.stage-1].name}`; $('#tile-info').textContent=STAGES[c.stage-1].note; fit(); }
 function fit(){
   if(!canvas.width) return;
   const full=document.getElementById('stage-full');
@@ -122,7 +125,7 @@ function frame(now){
   } else { last=now; acc=0; }
   if(S&&S.status!=='play'&&$('#result-card').hidden){ if(mode==='over') resultCard(S.status==='win'); else if(mode==='clear') clearCard(); }
   const s=S||previewS;
-  if(s){ R.draw(g,s); if(S&&paused&&menu) drawPauseDim(); }
+  if(s){ if(S) R.draw(g,s); else R.preview(g,s,previewCard); if(S&&paused&&menu) drawPauseDim(); }
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
