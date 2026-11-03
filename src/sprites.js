@@ -1,6 +1,6 @@
 /* 동현크 그림: 모든 도트는 이 파일의 글자 격자로 새로 그린다. 원작 게임의 그림은 한 점도 쓰지 않는다.
    P 포동이(네발로 선 옆모습 24×20, 오른쪽 보기·왼쪽은 뒤집기, 둥근 머리·양옆의 짧은 흰 귀·동그란 눈코·빨간 목줄·말린 꼬리) · 라이언(동현파의 분홍 선충) · 슈슈(동현파의 복싱 소녀)
-   보병·전차(동현전의 붉은별 사령부) · 창병·기사(동현워) */
+   보병·전차·신형전차(동현전의 붉은별 사령부, 신형전차 36×22는 스테이지 3 보스) · 창병·기사(동현워) */
 (function(root){
 'use strict';
 const PAL={
@@ -321,6 +321,29 @@ knight:`
 ...ktt..ktt...ktt..kt...
 ...kkk..kkk...kkk..kk...`,
 // 포탄 · 간식(뼈다귀) · 하트
+neo:`
+..............kkkkkkkk..............
+............kkaAAAAAAakk............
+...........kaAAwwAAAAAAak...........
+...........kAAAAAAAAAAAAk...........
+..........kkkkkkkkkkkkkkkkkkkkkkkkkk
+.........kMMMMMMMMMMMMMMkaaaaaaaaaak
+.........kMMMMMMMMMMMMMMkkkkkkkkkkkk
+........kMMMMMMMMMMMMMMMMk..........
+......kkkkkkkkkkkkkkkkkkkkkkk.......
+....kkMMMMMMMMMMMMMMMMMMMMMMMkk.....
+..kkMMMMMMMMMMMYYMMMMMMMMMMMMMMkk...
+.kMMMMMMMMMMMMYYYYMMMMMMMMMMMMMMMk..
+kMMMMMMMMMMMMMYYYYMMMMMMMMMMMMMMMMk.
+kddddddddddddddYYdddddddddddddddddk.
+kddddddddddddddddddddddddddddddddddk
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+kAAaAAAaAAAaAAAaAAAaAAAaAAAaAAAaAAAk
+kAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAak
+kAAaAAAaAAAaAAAaAAAaAAAaAAAaAAAaAAAk
+kAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAak
+.kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk.
+..kk..kk..kk..kk..kk..kk..kk..kk..kk`,
 shell:`
 .kk.
 kYYk

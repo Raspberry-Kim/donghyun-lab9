@@ -43,7 +43,7 @@ function tiles(g,S,cam){
     }
   }
   // 깃발
-  if(S.flagX!=null){ const fx=S.flagX*T-cam+7, gy=root.Engine.groundY(S,S.flagX); px(g,fx,gy-60,2,60,'#e6e6ee'); px(g,fx-1,gy-62,4,3,'#f2b705'); const wave=Math.sin(S.frame/8)*1.5; g.fillStyle='#d6403a'; g.beginPath(); g.moveTo(fx+2,gy-58); g.lineTo(fx+22+wave,gy-50); g.lineTo(fx+2,gy-42); g.fill(); px(g,fx+6,gy-54,8,6,'#f6ecd6'); }
+  if(S.flagX!=null&&!(S.boss&&S.boss.alive)){ const fx=S.flagX*T-cam+7, gy=root.Engine.groundY(S,S.flagX); px(g,fx,gy-60,2,60,'#e6e6ee'); px(g,fx-1,gy-62,4,3,'#f2b705'); const wave=Math.sin(S.frame/8)*1.5; g.fillStyle='#d6403a'; g.beginPath(); g.moveTo(fx+2,gy-58); g.lineTo(fx+22+wave,gy-50); g.lineTo(fx+2,gy-42); g.fill(); px(g,fx+6,gy-54,8,6,'#f6ecd6'); }
 }
 function drawSprite(g,key,x,y,flip){ const c=SP.make(key,flip); g.drawImage(c,Math.round(x),Math.round(y)); }
 /* 변신 장식: 포동이 머리 위·앞에 덧그린다 */
@@ -86,12 +86,22 @@ function enemies(g,S,cam){
     else if(e.type==='tank') drawSprite(g,'tank',x,e.y-2,flip);
     else if(e.type==='pike') drawSprite(g,'pike',x-2,e.y,flip);
     else if(e.type==='knight') drawSprite(g,'knight',x,e.y,flip);
+    else if(e.type==='neo') drawSprite(g,'neo',x,e.y-2,flip);
     g.globalAlpha=1;
   }
 }
+/* 변신 배지 12×12: 모습 색의 둥근 칸에 첫 글자. 이미 변신했으면 흐리게(점수만) */
+const BADGE_CH={tank:'전',knight:'기',copter:'헬',doom:'둠',fly:'초'};
+function badge(g,S,it,x,y){
+  const f=FORMS[it.form]; if(!f) return; const dim=S.formI>0; if(dim) g.globalAlpha=0.45;
+  px(g,x+1,y,10,12,'#2e2a38'); px(g,x,y+1,12,10,'#2e2a38'); px(g,x+2,y+1,8,10,f.color); px(g,x+1,y+2,10,8,f.color); px(g,x+2,y+2,2,2,'rgba(255,255,255,.7)');
+  g.font='bold 8px Pretendard, sans-serif'; g.textBaseline='top'; g.textAlign='center'; g.fillStyle='#fff'; g.fillText(BADGE_CH[f.key]||'변',x+6,y+2); g.textAlign='left';
+  if(!dim&&((S.frame>>3)&1)){ px(g,x+5,y-3,2,2,'#f2b705'); }
+  g.globalAlpha=1;
+}
 function items(g,S,cam){
   for(const it of S.items){ if(it.taken) continue; const x=it.px-cam; if(x<-16||x>VW+16) continue; const bob=Math.sin((S.frame+it.x*7)/14)*1.5;
-    drawSprite(g,it.type==='bone'?'bone':'heart',x,it.py+bob,false); }
+    if(it.type==='form') badge(g,S,it,x,it.py+bob); else drawSprite(g,it.type==='bone'?'bone':'heart',x,it.py+bob,false); }
   for(const p of S.shots){ const x=p.x-cam; if(p.kind==='shell') drawSprite(g,'shell',x,p.y,false); else px(g,x,p.y,3,2,'#f2b705'); }
   for(const f of S.fx){ const x=f.x-cam, k=f.t/24;
     if(f.kind==='pop'){ g.strokeStyle='rgba(255,255,255,'+(1-k)+')'; g.lineWidth=2; g.beginPath(); g.arc(x,f.y,4+k*14,0,7); g.stroke(); }
@@ -107,7 +117,9 @@ function hud(g,S){
   drawSprite(g,'bone',VW-98,4,false); g.fillText(String(S.bones).padStart(2,'0'),VW-86,3);
   g.fillText(String(S.score).padStart(6,'0'),VW-66,3);
   // 변신 이름(가운데)
-  const label=f.name+(S.forms.length>1?'  S 변신':''), lw=g.measureText(label).width; if(f.key!=='base'){ px(g,VW/2-lw/2-9,4,6,6,f.color); } g.textAlign='center'; g.fillStyle='#fff'; g.fillText(label,VW/2+(f.key!=='base'?3:0),3); g.textAlign='left';
+  const label=f.name, lw=g.measureText(label).width; if(f.key!=='base'){ px(g,VW/2-lw/2-9,4,6,6,f.color); } g.textAlign='center'; g.fillStyle='#fff'; g.fillText(label,VW/2+(f.key!=='base'?3:0),3); g.textAlign='left';
+  // 보스 체력
+  if(S.boss&&S.bossOn&&S.boss.alive){ const b=S.boss, w=120, x0=VW/2-w/2; g.fillStyle='rgba(0,0,0,.45)'; g.fillRect(x0-2,16,w+4,12); px(g,x0,18,w,8,'#3a3438'); px(g,x0,18,Math.round(w*b.hp/b.maxhp),8,b.hp<=b.maxhp/2?'#ff7a3a':'#e5483a'); g.fillStyle='#fff'; g.textAlign='center'; g.fillText(ENEMIES.neo.name+' '+b.hp+'/'+b.maxhp,VW/2,19); g.textAlign='left'; }
   if(S.msgT>0&&S.msg){ const a=Math.min(1,S.msgT/20); g.fillStyle='rgba(0,0,0,'+(0.5*a)+')'; const w=g.measureText(S.msg).width+16; g.fillRect(VW/2-w/2,60,w,14); g.fillStyle='rgba(255,255,255,'+a+')'; g.textAlign='center'; g.fillText(S.msg,VW/2,63); g.textAlign='left'; }
 }
 function draw(g,S){
