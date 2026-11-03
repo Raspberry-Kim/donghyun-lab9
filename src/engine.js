@@ -158,7 +158,7 @@ function attack(S,h,f){
   else if(k==='spit'){ h.cool=9; h.atkT=8; S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-3,y:h.y+6,w:3,h:2,vx:h.dir*4.2,vy:0,life:12,dmg:1,alive:true,kind:'spit'}); }
   /* 사석포: 돌을 높이 던진다(포물선, 떨어진 자리 주변을 친다) */
   else if(k==='lob'){ h.cool=46; S.shots.push({owner:'hero',x:h.x+h.w/2-2,y:h.y-4,w:5,h:5,vx:h.dir*2.0,vy:-4.6,g:GRAV,life:120,dmg:2,alive:true,kind:'stone',splash:16}); }
-  /* 산병(동현워 정예 산병): 투창. 살짝 포물선으로 날아가 사거리 약 7칸. 멀리서 쏘는 적(장궁병·사석포)에는 2 피해 */
+  /* 산병(동현워 정예 산병): 투창. 살짝 포물선으로 날아가 사거리 약 6칸. 멀리서 쏘는 적(장궁병·사석포)에는 2 피해 */
   else if(k==='javelin'){ h.cool=22; h.atkT=10; S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-8,y:h.y+3,w:8,h:2,vx:h.dir*3.4,vy:-1.6,g:GRAV*0.5,life:48,dmg:1,bonus:{archer:2,bombard:2},alive:true,kind:'javelin'}); }
   /* 로켓포: 곧게 멀리 나는 로켓, 맞은 자리 주변을 친다 */
   else if(k==='rocket'){ h.cool=70; S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-6,y:h.y+5,w:6,h:3,vx:h.dir*4.5,vy:0,life:55,dmg:2,alive:true,kind:'rocket',splash:18}); }

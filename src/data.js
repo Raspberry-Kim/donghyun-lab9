@@ -19,7 +19,7 @@ const FORMS=[
   {id:6,key:'bombard',name:'사석포 포동이',from:'동현워',color:'#8d6e4a',hp:3,speed:0.7,jump:0.9,
    desc:'Z로 돌을 높이 던진다(포물선, 떨어진 자리 주변 1칸까지 2 피해). 발판 위의 적도 넘겨 친다. 느리다.',atk:'lob'},
   {id:7,key:'skirm',name:'산병 포동이',from:'동현워',color:'#8fa36a',hp:3,speed:1.1,jump:1.0,
-   desc:'Z로 투창을 던진다(살짝 포물선, 사거리 약 7칸). 장궁병·사석포처럼 멀리서 쏘는 적에게는 2 피해. 가볍고 빠르다.',atk:'javelin'},
+   desc:'Z로 투창을 던진다(살짝 포물선, 사거리 약 6칸). 장궁병·사석포처럼 멀리서 쏘는 적에게는 2 피해. 가볍고 빠르다.',atk:'javelin'},
   {id:8,key:'rocket',name:'로켓포 포동이',from:'동현전',color:'#ff7a3a',hp:3,speed:0.8,jump:0.9,
    desc:'Z로 로켓을 멀리 쏜다(사거리 15칸, 맞은 자리 주변 1칸까지 2 피해). 재장전이 아주 느리다.',atk:'rocket'},
   {id:9,key:'bship',name:'전함 포동이',from:'동현전',color:'#4a6a8a',hp:5,speed:0.75,jump:0.9,
