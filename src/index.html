@@ -12,7 +12,7 @@
 <body>
 <header class="header">
   <a class="brand" href="#" aria-label="동현크 첫 화면으로"><span class="brand-main"><img class="brand-icon" src="__BRAND_ICON__" alt="" width="96" height="96">동현<span>크</span><sup>TM</sup></span><i class="brand-divider"></i><span class="brand-sub">ACTION PLATFORMER<small>코드로 변신하는 포동이의 산책</small></span></a><a class="doi-badge" href="https://doi.org/10.5281/zenodo.23914027" target="_blank" rel="noopener" aria-label="동현크 Zenodo DOI 10.5281/zenodo.23914027" title="Zenodo DOI (모든 버전)"><b>DOI</b><span>10.5281/zenodo.23914027</span></a>
-  <div class="edition">v0.06<button id="sound" class="icon-btn" aria-label="효과음 켜기·끄기" title="효과음 (M)" aria-pressed="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="snd-on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="snd-off" d="m16 9 6 6m0-6-6 6"/></svg></button><button id="theme" class="icon-btn" aria-label="밝은 화면과 어두운 화면 전환" title="화면 전환" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button></div>
+  <div class="edition">v0.07<button id="sound" class="icon-btn" aria-label="효과음 켜기·끄기" title="효과음 (M)" aria-pressed="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="snd-on" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="snd-off" d="m16 9 6 6m0-6-6 6"/></svg></button><button id="theme" class="icon-btn" aria-label="밝은 화면과 어두운 화면 전환" title="화면 전환" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button></div>
 </header>
 <main>
 <!-- SERIES-NAV-START -->
@@ -71,7 +71,7 @@
   </section>
 
   <section id="tab-protocol" class="tab-panel document" hidden>
-    <div class="doc-heading"><div class="eyebrow">SORTIE I/O · v0.06</div><h2>출전은 동현랭으로, 달리기는 키보드나 게임패드로.</h2><p>동현랭 프로그램이 출력한 정수를 차례로 읽는다. 명령 번호 하나 뒤에 값 하나가 온다. 마지막에 <code>6</code>을 출력해야 산책길에 나간다. 출전한 뒤에는 동현랭을 쓰지 않는다.</p></div>
+    <div class="doc-heading"><div class="eyebrow">SORTIE I/O · v0.07</div><h2>출전은 동현랭으로, 달리기는 키보드나 게임패드로.</h2><p>동현랭 프로그램이 출력한 정수를 차례로 읽는다. 명령 번호 하나 뒤에 값 하나가 온다. 마지막에 <code>6</code>을 출력해야 산책길에 나간다. 출전한 뒤에는 동현랭을 쓰지 않는다.</p></div>
     <div class="table-wrap"><table><thead><tr><th>명령</th><th>하는 일</th><th>값</th><th>기본값</th></tr></thead><tbody>
       <tr><td>1</td><td>목숨 수</td><td>1~99 · <b>0은 무적</b>(목숨이 무한이고 적에게 맞아도 체력이 줄지 않는다. 구덩이에 빠지면 제자리에서 다시 시작)</td><td>3</td></tr>
       <tr><td>2</td><td>시작 변신</td><td>1 전차(동현전) · 2 기사(동현워) · 3 헬기(동현콥) · 4 둠(동현둠) · 5 초파리(동현초). <b>한 가지만</b> 고를 수 있고 처음부터 그 모습으로 나선다. 쓰지 않으면 포동이로 나서서 스테이지의 <b>변신 배지</b>를 주워 변신한다. 목숨을 잃으면 여기서 정한 모습으로 돌아온다</td><td>없음</td></tr>
@@ -98,7 +98,7 @@
             <tr><td><kbd>A</kbd></td><td>지금 모습의 설명을 화면에 띄운다</td></tr>
       <tr><td><kbd>M</kbd></td><td>효과음 켜기·끄기(머리말 스피커 단추와 같다)</td></tr>
       <tr><td><kbd>Enter</kbd></td><td>메뉴: 계속 · 변신 설명 · 저장 · 불러오기 · 포기하고 출전 준비로. 메뉴가 열린 동안 게임은 멈춘다</td></tr>
-      <tr><td><span class="pad-tag">게임패드</span></td><td>블루투스·USB 게임패드를 붙이면 닌텐도 배치로 그대로 쓴다. A=X키(점프, 길게 누르면 높이), B=Z키(공격), Y=A키(설명), 십자·왼 스틱=←→, +=Enter(메뉴). X 단추는 쓰지 않는다. A·B가 뒤집혀 눌리는 패드는 −(Select)를 한 번 눌러 맞바꾼다</td></tr>
+      <tr><td><span class="pad-tag">게임패드</span></td><td>블루투스·USB 게임패드를 붙이면 닌텐도 배치 기준으로 쓴다. 다이아몬드 네 단추는 <b>자리</b>로 키보드와 짝을 맞춘다: 오른쪽=X키 · 아래=Z키 · 위=S키 · 왼쪽=A키(닌텐도 글자로 A·B·X·Y). A=X키(점프, 길게 누르면 높이), B=Z키(공격), Y=A키(설명), 십자·왼 스틱=←→, +=Enter(메뉴). X 단추는 쓰지 않는다. 브라우저가 네 단추의 번호를 자리 대신 글자로 보고하는 일이 있어, 처음 붙인 패드는 상태 줄 안내대로 <b>오른쪽 단추(A)를 한 번</b> 눌러 자리를 맞춘다(그 한 번은 게임에 들어가지 않고, 패드 이름별로 브라우저에 남는다). 다시 맞추려면 −(Select)를 누른다</td></tr>
     </tbody></table></div>
     <div><h3>규칙 요약</h3><ul>
       <li>체력: 기본 포동이 3, 변신마다 다르다. 맞으면 1 줄고 잠깐 깜빡이며 무적이 된다. 체력이 0이면 목숨 하나를 잃는다.</li>
@@ -127,7 +127,7 @@
     <aside class="maker-note"><span class="eyebrow">만든 사람</span><p>인하대학교 의과대학 김동현 교수는 백신학·감염학을 연구한다. 동현크는 동현랭 시리즈의 아홉 번째 프로젝트이다.</p></aside>
   </section>
 </main>
-<footer><span>동현크 v0.06 · 인하대학교 의과대학 교수 김동현</span><span>1인용 · 플랫폼 액션 · 스테이지 3 · 보스 1</span><span><a href="https://raspberry-kim.github.io/donghyun-lang/" target="_blank" rel="noopener">동현랭</a> · <a href="https://github.com/Raspberry-Kim/donghyun-lang" target="_blank" rel="noopener">동현랭 GitHub</a> · <a href="https://github.com/Raspberry-Kim/donghyun-lab9" target="_blank" rel="noopener">동현크 GitHub</a></span></footer>
+<footer><span>동현크 v0.07 · 인하대학교 의과대학 교수 김동현</span><span>1인용 · 플랫폼 액션 · 스테이지 3 · 보스 1</span><span><a href="https://raspberry-kim.github.io/donghyun-lang/" target="_blank" rel="noopener">동현랭</a> · <a href="https://github.com/Raspberry-Kim/donghyun-lang" target="_blank" rel="noopener">동현랭 GitHub</a> · <a href="https://github.com/Raspberry-Kim/donghyun-lab9" target="_blank" rel="noopener">동현크 GitHub</a></span></footer>
 <script src="./game.js"></script>
 <script>
 /* 입력 표식 풍선 도움말 */
