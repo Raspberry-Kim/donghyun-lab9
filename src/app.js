@@ -129,10 +129,10 @@ requestAnimationFrame(frame);
 function drawPauseDim(){ g.fillStyle='rgba(0,0,0,.35)'; g.fillRect(0,0,canvas.width,canvas.height); }
 
 /* ---------- 사건 → 소리·기록 ---------- */
-const SNDMAP={jump:'jump',jump2:'jump2',stomp:'stomp',bone:'bone',heart:'heartup',hurt:'hurt',die:'die',swap:'swap',ping:'ping',zone:'zone',cannon:'cannon',punch:'swish',win:'win',over:'lose',respawn:'pop'};
+const SNDMAP={jump:'jump',jump2:'jump2',stomp:'stomp',bone:'bone',heart:'heartup',hurt:'hurt',die:'die',swap:'swap',ping:'ping',zone:'zone',cannon:'cannon',boom:'cannon',arrow:'swish',punch:'swish',win:'win',over:'lose',respawn:'pop'};
 function events(){
   for(const ev of S.events){
-    if(ev.t==='atk'){ SND.play(ev.kind==='shell'?'shot':ev.kind==='shotgun'?'shotgun':ev.kind==='charge'?'charge':'paw'); }
+    if(ev.t==='atk'){ SND.play(({shell:'shot',shotgun:'shotgun',charge:'charge',rocket:'shot',salvo:'shot',lob:'shot',bomb:'paw',spit:'paw',thrust:'paw'})[ev.kind]||'paw'); }
     else if(ev.t==='hit'){ SND.play(ev.how==='stomp'?'stomp':'thud'); }
     else if(ev.t==='kill'){ SND.play('pop'); log(`${ENEMIES[ev.type].name}을(를) 쓰러뜨렸다.`); }
     else if(ev.t==='horse'){ SND.move('horse',0.6); }
@@ -150,7 +150,7 @@ function events(){
   }
   S.events.length=0; hud();
 }
-const hurtBy=b=>({spike:'가시',punch:'슈슈의 글러브',shell:'포탄',lion:'라이언',shushu:'슈슈',inf:'보병',tank:'전차',pike:'창병',knight:'기사',neo:'신형전차'})[b]||b;
+const hurtBy=b=>({spike:'가시',punch:'슈슈의 글러브',shell:'포탄',lion:'라이언',shushu:'슈슈',inf:'보병',tank:'전차',pike:'창병',knight:'기사',neo:'신형전차',archer:'장궁병',bombard:'사석포',recon:'정찰차',rocket:'로켓포',heli:'공격헬기',arrow:'화살',stone:'사석포의 돌',rocketshot:'로켓'})[b]||b;
 function log(html){ const li=document.createElement('li'); li.innerHTML=esc(html); const l=$('#log'); l.prepend(li); while(l.children.length>40) l.lastChild.remove(); }
 function hud(){
   const h=S.hero, f=E.form(S);

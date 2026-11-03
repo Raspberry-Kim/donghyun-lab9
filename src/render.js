@@ -38,7 +38,7 @@ function tiles(g,S,cam){
       if(t==='#'){ px(g,sx,sy,T,T,c.body); px(g,sx,sy,T,5,c.top); px(g,sx,sy,T,2,c.top2); if(z.ground==='grass'){ px(g,sx+3,sy-2,2,2,c.top); px(g,sx+10,sy-3,2,3,c.top2); } px(g,sx+4,sy+9,3,2,c.body2); px(g,sx+11,sy+12,2,2,c.body2); }
       else if(t==='='){ px(g,sx,sy,T,T,c.body); px(g,sx+2,sy+4,3,2,c.body2); px(g,sx+9,sy+10,4,2,c.body2); px(g,sx+12,sy+2,2,2,c.body2); }
       else if(t==='B'){ px(g,sx,sy,T,T,c.edge); px(g,sx+1,sy+1,14,6,c.top); px(g,sx+1,sy+9,6,6,c.top); px(g,sx+9,sy+9,6,6,c.top); px(g,sx+1,sy+1,14,2,c.top2); }
-      else if(t==='-'){ px(g,sx,sy+2,T,4,'#8a5a2b'); px(g,sx,sy+2,T,1,'#c58b4a'); px(g,sx+2,sy+6,2,4,'#5e3a18'); px(g,sx+12,sy+6,2,4,'#5e3a18'); }
+      else if(t==='-'){ px(g,sx,sy,T,4,'#8a5a2b'); px(g,sx,sy,T,1,'#c58b4a'); px(g,sx+2,sy+4,2,4,'#5e3a18'); px(g,sx+12,sy+4,2,4,'#5e3a18'); }
       else if(t==='^'){ for(let i=0;i<4;i++){ g.fillStyle='#d8d8e0'; g.beginPath(); g.moveTo(sx+i*4,sy+T); g.lineTo(sx+i*4+2,sy+6); g.lineTo(sx+i*4+4,sy+T); g.fill(); } px(g,sx,sy+14,T,2,'#555'); }
     }
   }
@@ -65,6 +65,20 @@ function formOverlay(g,S,h,x,y,flip){
   else if(f.key==='fly'){ /* 동현초 초파리: 몸 위 반투명 날개, 더듬이 */
     const fl=(S.frame>>2)&1; fr(3,2+fl,9,6,'rgba(230,180,240,.75)'); fr(5,1+fl,9,6,'rgba(230,180,240,.6)');
     fr(14,-3,1,3,'#2e2a38'); fr(19,-3,1,3,'#2e2a38'); fr(13,-4,2,1,'#2e2a38'); fr(19,-4,2,1,'#2e2a38'); }
+  else if(f.key==='bombard'){ /* 동현워 사석포: 등 위의 나무 틀과 던지는 팔, 끝에 돌주머니. 쏘면 팔이 앞으로 넘어간다 */
+    const up=h.atkT>6; fr(3,4,8,2,'#7a4a22'); fr(4,6,2,4,'#7a4a22'); fr(8,6,2,4,'#7a4a22');
+    if(up){ fr(6,-6,2,10,'#b07a3e'); fr(5,-9,4,4,'#7d7a72'); } else { fr(6,-2,10,2,'#b07a3e'); fr(14,-4,4,4,'#7d7a72'); }
+    fr(1,13,3,3,'#7a4a22'); fr(11,13,3,3,'#7a4a22'); }
+  else if(f.key==='pike'){ /* 동현워 장창병: 쇠 투구, 앞으로 든 긴 창(찌를 때 더 뻗는다) */
+    fr(12,-1,10,4,'#8d919c'); fr(13,-3,8,2,'#c7c9d1'); fr(16,-5,2,2,'#e5483a');
+    const ext=h.atkT>0?10:0; fr(14,10,14+ext,1,'#f6f2e8'); fr(27+ext,9,3,3,'#c7c9d1'); fr(26+ext,10,1,1,'#f6f2e8'); fr(10,9,3,3,'#7a4a22'); }
+  else if(f.key==='rocket'){ /* 동현전 로켓포: 등에 비스듬히 얹은 붉은 발사대와 로켓 세 발 */
+    fr(2,0,10,3,'#9a2620'); fr(3,-2,10,3,'#e5483a'); fr(5,-4,9,3,'#e5483a'); for(let i=0;i<3;i++) fr(12+i,-4+i,2,1,'#f2b705');
+    fr(1,4,3,6,'#5d5b53'); fr(3,8,6,2,'#5d5b53'); if(h.cool>50) fr(14,-6,3,3,'rgba(255,122,58,.8)'); }
+  else if(f.key==='bship'){ /* 동현전 전함: 몸을 감싼 회청색 선체, 머리 위 함교와 두 개의 포신, 뒤쪽 마스트 */
+    fr(0,10,20,6,'#4a6a8a'); fr(0,10,20,1,'#6f8aa8'); fr(1,12,18,1,'#2e4a66'); fr(2,16,16,2,'#2e4a66');
+    fr(12,-1,10,3,'#4a6a8a'); fr(14,-4,6,3,'#6f8aa8'); fr(16,-7,2,3,'#2e4a66'); fr(15,-8,4,1,'#e5483a');
+    fr(21,0,6,1,'#2e4a66'); fr(21,2,6,1,'#2e4a66'); fr(2,4,1,7,'#2e4a66'); fr(1,3,3,1,'#f6f2e8'); }
 }
 function hero(g,S,cam){
   const h=S.hero; if(h.inv>0&&!h.flash&&!h.dead&&(S.frame>>2)&1) return;
@@ -87,13 +101,18 @@ function enemies(g,S,cam){
     else if(e.type==='pike') drawSprite(g,'pike',x-2,e.y,flip);
     else if(e.type==='knight') drawSprite(g,'knight',x,e.y,flip);
     else if(e.type==='neo') drawSprite(g,'neo',x,e.y-2,flip);
+    else if(e.type==='archer') drawSprite(g,e.fire>0?'archer_shoot':'archer',x-2,e.y,flip);
+    else if(e.type==='bombard') drawSprite(g,e.fire>0?'bombard_up':'bombard',x,e.y-6,flip);
+    else if(e.type==='recon') drawSprite(g,'recon',x-2,e.y-2,flip);
+    else if(e.type==='rocket') drawSprite(g,'rocket',x-2,e.y-2,flip);
+    else if(e.type==='heli'){ drawSprite(g,'heli',x,e.y,flip); const ph=(S.frame>>1)&3, w=[22,14,6,14][ph]; px(g,x+12-w/2,e.y-2,w,1,'#231d18'); }
     g.globalAlpha=1;
   }
 }
 /* 변신 배지: 지금 모습과 같은 배지만 흐리게(점수만) */
-const BADGE_ICON={tank:'tank',knight:'ic_knight',copter:'ic_copter',doom:'ic_doom',fly:'ic_fly'};
+const BADGE_ICON={tank:'tank',knight:'ic_knight',copter:'ic_copter',doom:'ic_doom',fly:'ic_fly',bombard:'ic_bombard',pike:'ic_pike',rocket:'ic_rocket',bship:'ic_bship'};
 function badge(g,S,it,x,y){
-  /* 배지는 그 모습이 온 세계의 그림이다: 전차=동현전 전차, 기사=동현워 투구·방패, 헬기=동현콥 꼬리콥터, 둠=동현둠 철모·산탄총, 초파리=동현초 초파리 */
+  /* 배지는 그 모습이 온 세계의 그림이다: 전차=동현전 전차, 기사=동현워 투구·방패, 헬기=동현콥 꼬리콥터, 둠=동현둠 철모·산탄총, 초파리=동현초 초파리, 사석포=동현워 사석포, 장창병=동현워 투구·장창, 로켓포=동현전 로켓포, 전함=동현전 전함 */
   const f=FORMS[it.form]; if(!f) return; const dim=S.forms[S.formI]===it.form; if(dim) g.globalAlpha=0.45;
   const key=BADGE_ICON[f.key]; const bx=Math.round(x)-2, by=Math.round(y)-2;
   g.fillStyle='rgba(255,255,255,.35)'; g.fillRect(bx-1,by+13,18,3);
@@ -104,9 +123,18 @@ function badge(g,S,it,x,y){
 function items(g,S,cam){
   for(const it of S.items){ if(it.taken) continue; const x=it.px-cam; if(x<-16||x>VW+16) continue; const bob=Math.sin((S.frame+it.x*7)/14)*1.5;
     if(it.type==='form') badge(g,S,it,x,it.py+bob); else drawSprite(g,it.type==='bone'?'bone':'heart',x,it.py+bob,false); }
-  for(const p of S.shots){ const x=p.x-cam; if(p.kind==='shell') drawSprite(g,'shell',x,p.y,false); else px(g,x,p.y,3,2,'#f2b705'); }
+  for(const p of S.shots){ const x=p.x-cam;
+    if(p.kind==='shell') drawSprite(g,'shell',x,p.y,false);
+    else if(p.kind==='arrow'){ px(g,x,p.y,8,1,'#f6f2e8'); px(g,p.vx>0?x+6:x,p.y-1,2,3,'#8d919c'); }
+    else if(p.kind==='stone'){ px(g,x+1,p.y,3,5,'#7d7a72'); px(g,x,p.y+1,5,3,'#7d7a72'); px(g,x+1,p.y+1,2,1,'#a3a098'); }
+    else if(p.kind==='rocket'){ const fl=p.vx>=0; px(g,x,p.y,6,3,'#e5483a'); px(g,fl?x+5:x,p.y+1,1,1,'#f2b705'); px(g,fl?x-3:x+6,p.y+(S.frame&1),3,2,'rgba(255,122,58,.9)'); }
+    else if(p.kind==='bomb'){ px(g,x,p.y,4,4,'#231d18'); px(g,x+1,p.y-1,1,1,(S.frame>>1)&1?'#f2b705':'#ff7a3a'); }
+    else if(p.kind==='spit'){ px(g,x,p.y,3,2,'#e07be0'); }
+    else if(p.kind==='shell2'){ px(g,x,p.y,4,4,'#3a3438'); px(g,x+1,p.y+1,1,1,'#9a978c'); }
+    else px(g,x,p.y,3,2,'#f2b705'); }
   for(const f of S.fx){ const x=f.x-cam, k=f.t/24;
     if(f.kind==='pop'){ g.strokeStyle='rgba(255,255,255,'+(1-k)+')'; g.lineWidth=2; g.beginPath(); g.arc(x,f.y,4+k*14,0,7); g.stroke(); }
+    else if(f.kind==='boom'){ g.strokeStyle='rgba(255,122,58,'+(1-k)+')'; g.lineWidth=3; g.beginPath(); g.arc(x,f.y,3+k*16,0,7); g.stroke(); g.fillStyle='rgba(242,183,5,'+(0.6-k*0.6)+')'; g.beginPath(); g.arc(x,f.y,2+k*9,0,7); g.fill(); }
     else if(f.kind==='spark'){ for(let i=0;i<4;i++) px(g,x+Math.cos(i*1.57)*k*12,f.y-k*10+Math.sin(i*1.57)*k*6,2,2,'#f2b705'); }
     else { px(g,x-4+k*2,f.y-2-k*6,8-k*4,4,'rgba(255,255,255,'+(0.7-k*0.7)+')'); } }
 }

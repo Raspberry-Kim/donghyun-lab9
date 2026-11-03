@@ -51,7 +51,7 @@ function spawnHero(S,at){
 }
 function spawnEnemy(S,type,tx,i){
   const d=ENEMIES[type], gy=groundY(S,tx);
-  return {id:i,type,x:tx*T+(T-d.w)/2,y:gy-d.h,w:d.w,h:d.h,vx:-d.speed,vy:0,dir:-1,hp:d.hits,maxhp:d.hits,alive:true,anim:0,t:S.rng()*60|0,punch:0,charge:0,fire:0,hurt:0,boss:!!d.boss,shots:0};
+  return {id:i,type,x:tx*T+(T-d.w)/2,y:gy-d.h-(d.fly?4*T-2:0),x0:tx*T,w:d.w,h:d.h,vx:-d.speed,vy:0,dir:-1,hp:d.hits,maxhp:d.hits,alive:true,anim:0,t:S.rng()*60|0,punch:0,charge:0,fire:0,hurt:0,boss:!!d.boss,shots:0};
 }
 /* ---------- 충돌 ---------- */
 function rectSolid(S,x,y,w,h,vy,oneway){
@@ -107,7 +107,7 @@ function step(S,keys){
   if(keys.attackPressed&&h.cool<=0&&h.charge<=0){ attack(S,h,f); }
   moveBody(S,h,true);
   if(h.y>ROWS*T+8) return die(S,'fall');
-  if(onSpikes(S,h)) hurt(S,h,2,'spike');
+  if(onSpikes(S,h)&&!f.armor) hurt(S,h,2,'spike');
   // 상태
   if(h.atkT>0) h.state='attack'; else if(!h.onGround) h.state=h.vy<0?'jump':'fall'; else if(Math.abs(h.vx)>0.2) h.state='run'; else h.state='idle';
   if(h.state==='run') h.anim+=Math.abs(h.vx)*0.9; else h.anim++;
@@ -132,9 +132,12 @@ function step(S,keys){
   }
   // 발사체
   for(const p of S.shots){ if(!p.alive) continue; if(p.g) p.vy=Math.min(MAXFALL,p.vy+p.g); p.x+=p.vx; p.y+=p.vy; p.life--; if(p.life<=0) p.alive=false;
-    if(rectSolid(S,p.x,p.y,p.w,p.h,0,false)){ p.alive=false; addFx(S,'puff',p.x,p.y); continue; }
-    if(p.owner==='hero'){ for(const e of S.enemies){ if(e.alive&&overlap(p,e)){ hitEnemy(S,e,p.dmg,'shot'); if(!p.pierce) p.alive=false; break; } } }
-    else if(h.inv<=0&&!h.dead&&overlap(p,h)&&h.charge<=0){ p.alive=false; hurt(S,h,1,'shell'); }
+    if(p.life<=0&&p.splash){ boom(S,p); continue; }
+    if(rectSolid(S,p.x,p.y,p.w,p.h,0,false)){
+      if(p.kind==='bomb'&&p.vy>0&&!rectSolid(S,p.x,p.y-p.vy,p.w,p.h,0,false)){ p.y=Math.floor((p.y+p.h)/T)*T-p.h-0.01; p.vy=0; p.vx*=0.9; } // 폭탄은 바닥에 떨어지면 구른다
+      else { p.alive=false; if(p.splash) boom(S,p); else addFx(S,'puff',p.x,p.y); continue; } }
+    if(p.owner==='hero'){ for(const e of S.enemies){ if(e.alive&&overlap(p,e)){ if(p.splash){ p.alive=false; boom(S,p); } else { hitEnemy(S,e,p.dmg,'shot'); if(!p.pierce) p.alive=false; } break; } } }
+    else if(h.inv<=0&&!h.dead&&overlap(p,h)&&h.charge<=0){ p.alive=false; hurt(S,h,1,({arrow:'arrow',stone:'stone',rocket:'rocketshot'})[p.kind]||'shell'); }
   }
   S.shots=S.shots.filter(p=>p.alive);
   // 체크포인트: 구역 경계를 지나면
@@ -149,6 +152,23 @@ function attack(S,h,f){
   else if(k==='shell'){ h.cool=34; S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-4,y:h.y+5,w:4,h:3,vx:h.dir*3.2,vy:0,life:36,dmg:1,alive:true,kind:'shell'}); }
   else if(k==='charge'){ h.cool=40; h.charge=12; h.inv=Math.max(h.inv,14); const box={x:h.dir>0?h.x:h.x-48,y:h.y,w:h.w+48,h:h.h}; h.chargeBox=box; }
   else if(k==='shotgun'){ h.cool=48; for(let i=-1;i<=1;i++) S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-3,y:h.y+7+i*2,w:3,h:2,vx:h.dir*3.6,vy:i*0.9,life:14,dmg:1,alive:true,kind:'pellet',pierce:true}); }
+  /* 헬기: 폭탄을 아래로 떨어뜨린다(활공 중이면 폭격). 바닥·적에 닿으면 터져 주변 1칸을 친다 */
+  else if(k==='bomb'){ h.cool=30; S.shots.push({owner:'hero',x:h.x+h.w/2-2,y:h.y+h.h-5,w:4,h:4,vx:h.dir*1.4+h.vx*0.5,vy:Math.max(0.3,h.vy),g:GRAV,life:48,dmg:1,alive:true,kind:'bomb',splash:16}); }
+  /* 초파리: 침을 빠르게 뱉는다(짧은 사거리, 연타) */
+  else if(k==='spit'){ h.cool=9; h.atkT=8; S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-3,y:h.y+6,w:3,h:2,vx:h.dir*4.2,vy:0,life:12,dmg:1,alive:true,kind:'spit'}); }
+  /* 사석포: 돌을 높이 던진다(포물선, 떨어진 자리 주변을 친다) */
+  else if(k==='lob'){ h.cool=46; S.shots.push({owner:'hero',x:h.x+h.w/2-2,y:h.y-4,w:5,h:5,vx:h.dir*2.0,vy:-4.6,g:GRAV,life:120,dmg:2,alive:true,kind:'stone',splash:16}); }
+  /* 장창병: 긴 창 찌르기(앞 24px). 달리는 탈것(기사·정찰차)에는 2 피해 */
+  else if(k==='thrust'){ h.cool=13; h.atkT=12; const box={x:h.dir>0?h.x+h.w:h.x-24,y:h.y+5,w:24,h:8}; for(const e of S.enemies) if(e.alive&&overlap(box,e)) hitEnemy(S,e,(e.type==='knight'||e.type==='recon')?2:1,'thrust'); h.pawBox=box; }
+  /* 로켓포: 곧게 멀리 나는 로켓, 맞은 자리 주변을 친다 */
+  else if(k==='rocket'){ h.cool=70; S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-6,y:h.y+5,w:6,h:3,vx:h.dir*4.5,vy:0,life:55,dmg:2,alive:true,kind:'rocket',splash:18}); }
+  /* 전함: 함포 두 발(멀리·가까이 포물선) */
+  else if(k==='salvo'){ h.cool=60; for(const [vx,vy] of [[2.8,-5.4],[1.6,-5.0]]) S.shots.push({owner:'hero',x:h.x+h.w/2-2,y:h.y-2,w:4,h:4,vx:h.dir*vx,vy,g:GRAV,life:140,dmg:2,alive:true,kind:'shell2',splash:12}); }
+}
+/* 터지는 발사체: 반지름 안의 적을 모두 친다 */
+function boom(S,p){
+  p.alive=false; const cx=p.x+p.w/2, cy=p.y+p.h/2, r=p.splash; addFx(S,'boom',cx,cy); S.events.push({t:'boom'});
+  for(const e of S.enemies){ if(!e.alive) continue; const ex=Math.max(e.x,Math.min(cx,e.x+e.w)), ey=Math.max(e.y,Math.min(cy,e.y+e.h)); if((ex-cx)**2+(ey-cy)**2<=r*r) hitEnemy(S,e,p.dmg,'boom'); }
 }
 function transform(S,fi){
   const h=S.hero; S.forms=fi?[0,fi]:[0]; S.formI=fi?1:0; const nf=form(S); h.maxhp=nf.hp; h.hp=nf.hp; h.inv=Math.max(h.inv,30); h.flash=30; h.charge=0;
@@ -164,7 +184,7 @@ function hitEnemy(S,e,dmg,how){
   if(e.type==='pike'&&how==='stomp') return; // 창 위로는 밟을 수 없다(위에서 막힘)
   if(e.boss&&e.hurt>0) return; // 보스는 맞은 직후 잠깐 다시 맞지 않는다(돌진·산탄으로 한 번에 녹지 않게)
   e.hp-=dmg; e.hurt=10; S.events.push({t:'hit',type:e.type,how});
-  if(e.hp<=0){ e.alive=false; S.score+=({lion:100,shushu:200,inf:150,tank:500,pike:250,knight:400,neo:3000})[e.type]||100; addFx(S,'pop',e.x+e.w/2,e.y+e.h/2); S.events.push({t:'kill',type:e.type});
+  if(e.hp<=0){ e.alive=false; S.score+=({lion:100,shushu:200,inf:150,tank:500,pike:250,knight:400,archer:200,bombard:450,recon:300,rocket:400,heli:450,neo:3000})[e.type]||100; addFx(S,'pop',e.x+e.w/2,e.y+e.h/2); S.events.push({t:'kill',type:e.type});
     if(e.boss){ S.bossOn=false; S.msg='신형전차 격파 · 깃발이 섰다'; S.msgT=150; S.events.push({t:'bosskill'}); for(const p of S.shots) if(p.owner==='enemy') p.alive=false; } }
   else if(!e.boss){ e.vx=-e.vx; e.dir=-e.dir; }
 }
@@ -203,6 +223,26 @@ function stepEnemy(S,e,h){
     else { if(near&&Math.abs(dx)<120&&Math.abs(e.y-h.y)<30&&e.t%50===0){ e.dir=dx>0?1:-1; e.charge=36; S.events.push({t:'horse'}); } else e.vx=e.dir*d.speed; }
   }
   else if(e.type==='inf'){ if(near&&e.t%90===0) e.dir=dx>0?1:-1; e.vx=e.dir*d.speed; }
+  else if(e.type==='archer'){ /* 같은 높이의 포동이를 보면 멈춰 서서 화살을 곧게 쏜다 */
+    if(e.fire>0){ e.fire--; e.vx=0; if(e.fire===12){ S.shots.push({owner:'enemy',x:e.dir>0?e.x+e.w:e.x-8,y:e.y+9,w:8,h:2,vx:e.dir*3.0,vy:0,life:56,alive:true,kind:'arrow'}); S.events.push({t:'arrow'}); } }
+    else { if(near&&Math.abs(e.y-h.y)<20&&Math.abs(dx)>20&&Math.abs(dx)<170&&e.t%96===0){ e.dir=dx>0?1:-1; e.fire=30; } e.vx=e.dir*d.speed; }
+  }
+  else if(e.type==='bombard'){ /* 제자리에서 포동이 자리로 돌을 높이 던진다 */
+    e.vx=0; if(Math.abs(dx)>8) e.dir=dx>0?1:-1; if(e.fire>0) e.fire--;
+    if(Math.abs(dx)<210&&Math.abs(dx)>28&&e.t%120===0){ e.fire=14; const vy=-5.4, tf=(2*5.4)/GRAV, vx=Math.max(-3,Math.min(3,dx/tf)); S.shots.push({owner:'enemy',x:e.x+e.w/2-2,y:e.y-6,w:5,h:5,vx,vy,g:GRAV,life:130,alive:true,kind:'stone'}); S.events.push({t:'cannon'}); }
+  }
+  else if(e.type==='rocket'){ /* 천천히 오가며 로켓을 높이 쏘아 포동이 자리에 떨어뜨린다 */
+    e.vx=e.dir*d.speed; if(near) e.dir=dx>0?1:-1;
+    if(Math.abs(dx)<230&&Math.abs(dx)>30&&e.t%130===0){ const vy=-6.2, tf=(2*6.2)/GRAV, vx=Math.max(-3.4,Math.min(3.4,dx/tf)); S.shots.push({owner:'enemy',x:e.x+e.w/2-3,y:e.y-4,w:6,h:3,vx,vy,g:GRAV,life:140,alive:true,kind:'rocket'}); S.events.push({t:'cannon'}); }
+  }
+  else if(e.type==='recon'){ /* 빠르고, 보면 달려든다 */
+    if(near&&Math.abs(e.y-h.y)<30&&e.t%24===0) e.dir=dx>0?1:-1; e.vx=e.dir*(near?d.speed*1.4:d.speed);
+  }
+  else if(e.type==='heli'){ /* 발판 높이에서 집 주변을 오가며 포탄을 떨어뜨린다. 땅에 매이지 않는다 */
+    if(Math.abs(e.x-e.x0)>72&&(e.x-e.x0)*e.dir>0) e.dir=-e.dir; e.vx=e.dir*d.speed; e.vy=Math.sin(e.t/14)*0.35;
+    if(Math.abs(dx)<40&&h.y>e.y&&e.t%90===0){ S.shots.push({owner:'enemy',x:e.x+e.w/2-2,y:e.y+e.h,w:4,h:3,vx:0,vy:0.6,g:GRAV,life:90,alive:true,kind:'shell'}); S.events.push({t:'cannon'}); }
+    e.x+=e.vx; e.y+=e.vy; if(rectSolid(S,e.x,e.y,e.w,e.h,0,false)){ e.x-=e.vx; e.dir=-e.dir; } e.onGround=false; return;
+  }
   else if(e.type==='neo'){
     if(!S.bossOn){ e.vx=0; e.vy=Math.min(MAXFALL,e.vy+GRAV); moveBody(S,e,true); return; }
     const rage=e.hp<=e.maxhp/2, spd=rage?0.55:d.speed, every=rage?52:80;
