@@ -41,7 +41,7 @@ function mulberry(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul
 function form(S){ return FORMS[S.forms[S.formI]]; }
 function spawnHero(S,at){
   const f=form(S), prev=S.hero;
-  S.hero={x:at.x+2,y:at.y-24,w:12,h:22,vx:0,vy:0,dir:1,onGround:false,state:'idle',anim:0,hp:f.hp,maxhp:f.hp,inv:0,coyote:0,buffer:0,
+  S.hero={x:at.x,y:at.y-16,w:16,h:16,vx:0,vy:0,dir:1,onGround:false,state:'idle',anim:0,hp:f.hp,maxhp:f.hp,inv:0,coyote:0,buffer:0,
     atkT:0,cool:0,jumps:0,charge:0,dead:0,win:0,flash:0};
   if(prev&&prev.hp>0){ S.hero.hp=Math.min(f.hp,prev.hp); }
 }
@@ -51,7 +51,7 @@ function spawnEnemy(S,type,tx,i){
 }
 /* ---------- 충돌 ---------- */
 function rectSolid(S,x,y,w,h,vy,oneway){
-  const x0=Math.floor(x/T), x1=Math.floor((x+w-1)/T), y0=Math.floor(y/T), y1=Math.floor((y+h-1)/T);
+  const x0=Math.floor(x/T), x1=Math.floor((x+w-1)/T), y0=Math.floor(y/T), y1=Math.floor((y+h-0.001)/T);
   for(let ty=y0;ty<=y1;ty++) for(let tx=x0;tx<=x1;tx++){ const t=tileAt(S,tx,ty); if(SOLID[t]) return true;
     if(oneway&&ONEWAY[t]&&vy>=0){ const top=ty*T; if(y+h-vy<=top+0.01) return true; } }
   return false;
@@ -137,10 +137,10 @@ function step(S,keys){
 }
 function attack(S,h,f){
   const k=f.atk; h.atkT=14; S.events.push({t:'atk',kind:k});
-  if(k==='paw'){ h.cool=18; const box={x:h.dir>0?h.x+h.w:h.x-10,y:h.y+8,w:10,h:12}; for(const e of S.enemies) if(e.alive&&overlap(box,e)) hitEnemy(S,e,1,'paw'); h.pawBox=box; }
-  else if(k==='shell'){ h.cool=34; S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-4,y:h.y+9,w:4,h:3,vx:h.dir*3.2,vy:0,life:36,dmg:1,alive:true,kind:'shell'}); }
+  if(k==='paw'){ h.cool=18; const box={x:h.dir>0?h.x+h.w:h.x-10,y:h.y+4,w:10,h:12}; for(const e of S.enemies) if(e.alive&&overlap(box,e)) hitEnemy(S,e,1,'paw'); h.pawBox=box; }
+  else if(k==='shell'){ h.cool=34; S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-4,y:h.y+5,w:4,h:3,vx:h.dir*3.2,vy:0,life:36,dmg:1,alive:true,kind:'shell'}); }
   else if(k==='charge'){ h.cool=40; h.charge=12; h.inv=Math.max(h.inv,14); const box={x:h.dir>0?h.x:h.x-48,y:h.y,w:h.w+48,h:h.h}; h.chargeBox=box; }
-  else if(k==='shotgun'){ h.cool=48; for(let i=-1;i<=1;i++) S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-3,y:h.y+10+i*2,w:3,h:2,vx:h.dir*3.6,vy:i*0.9,life:14,dmg:1,alive:true,kind:'pellet',pierce:true}); }
+  else if(k==='shotgun'){ h.cool=48; for(let i=-1;i<=1;i++) S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-3,y:h.y+7+i*2,w:3,h:2,vx:h.dir*3.6,vy:i*0.9,life:14,dmg:1,alive:true,kind:'pellet',pierce:true}); }
 }
 function hitEnemy(S,e,dmg,how){
   const d=ENEMIES[e.type];

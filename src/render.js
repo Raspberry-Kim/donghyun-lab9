@@ -48,32 +48,33 @@ function tiles(g,S,cam){
 function drawSprite(g,key,x,y,flip){ const c=SP.make(key,flip); g.drawImage(c,Math.round(x),Math.round(y)); }
 /* 변신 장식: 포동이 머리 위·앞에 덧그린다 */
 function formOverlay(g,S,h,x,y,flip){
-  const f=root.Engine.form(S); const d=flip?-1:1, hx=x+8;
-  if(f.key==='tank'){ /* 동현전 전차: 회색 포탑 모자·포신·발밑 궤도 */
-    px(g,x+2,y+1,12,3,'#5d5b53'); px(g,x+1,y+3,14,2,'#9a978c'); px(g,flip?x-5:x+14,y+3,7,2,'#5d5b53');
-    px(g,x-1,y+19,18,5,'#5d5b53'); px(g,x,y+20,16,3,'#9a978c'); for(let i=0;i<4;i++) px(g,x+1+i*4+((S.frame>>2)&1),y+20,2,3,'#3b3a36'); px(g,x+6,y+20,4,2,'#e5483a'); }
-  else if(f.key==='knight'){ /* 동현워 기사: 은빛 투구·푸른 깃·방패 */
-    px(g,x+2,y+0,12,4,'#8d919c'); px(g,x+3,y-2,10,2,'#c7c9d1'); px(g,hx-1,y-6,2,5,'#3a78e8'); px(g,hx+1,y-5,2,3,'#3a78e8');
-    const sx=flip?x+13:x-3; px(g,sx,y+9,6,9,'#24417a'); px(g,sx+1,y+10,4,7,'#3b63b5'); px(g,sx+2,y+12,2,3,'#f2b705'); }
-  else if(f.key==='copter'){ /* 동현콥 헬기: 머리 위 돌아가는 날개·꼬리 */
-    px(g,hx-1,y-4,2,4,'#5d5b53'); const ph=(S.frame>>1)&3, w=[16,10,4,10][ph]; px(g,hx-w/2,y-6,w,2,'#2bb0c8');
-    const tx=flip?x+15:x-7; px(g,tx,y+6,8,2,'#5d5b53'); px(g,flip?tx+7:tx-1,y+3+((S.frame>>1)&1)*4,2,2,'#2bb0c8'); }
-  else if(f.key==='doom'){ /* 동현둠: 초록 철모·산탄총 */
-    px(g,x+2,y+0,12,4,'#5a8f3a'); px(g,x+3,y-2,10,2,'#6fb04a'); px(g,x+2,y+3,12,1,'#3e6b28');
-    const gx=flip?x-8:x+12; px(g,gx,y+10,12,2,'#3b3f4a'); px(g,flip?gx+9:gx,y+12,4,2,'#7a4a22'); px(g,flip?gx:gx+10,y+9,2,3,'#231d18'); }
-  else if(f.key==='fly'){ /* 동현초 초파리: 반투명 날개·더듬이 */
-    const fl=(S.frame>>2)&1; px(g,x-4,y+5+fl,6,9,'rgba(230,180,240,.75)'); px(g,x+14,y+5+fl,6,9,'rgba(230,180,240,.75)');
-    px(g,hx-3,y-3,1,3,'#2e2a38'); px(g,hx+2,y-3,1,3,'#2e2a38'); px(g,hx-4,y-4,2,1,'#2e2a38'); px(g,hx+2,y-4,2,1,'#2e2a38'); }
+  /* 포동이 24×20 기준 좌표. M(xo,w)는 왼쪽을 볼 때 좌우를 뒤집는다. 머리 12~23열, 몸 2~17열, 다리 15~19행 */
+  const f=root.Engine.form(S), M=(xo,w)=>flip?x+24-xo-w:x+xo, fr=(xo,yo,w,hh,c)=>px(g,M(xo,w),y+yo,w,hh,c);
+  if(f.key==='tank'){ /* 동현전 전차: 머리 위 회색 포탑·포신, 몸 아래 궤도 */
+    fr(12,0,10,3,'#5d5b53'); fr(11,2,12,2,'#9a978c'); fr(19,2,6,2,'#5d5b53');
+    fr(1,16,18,4,'#5d5b53'); fr(2,17,16,2,'#9a978c'); for(let i=0;i<4;i++) fr(3+i*4+((S.frame>>2)&1),17,2,2,'#3b3a36'); fr(8,16,4,2,'#e5483a'); }
+  else if(f.key==='knight'){ /* 동현워 기사: 투구·깃·몸통 옆 방패 */
+    fr(12,-1,10,4,'#8d919c'); fr(13,-3,8,2,'#c7c9d1'); fr(16,-7,2,5,'#3a78e8'); fr(18,-6,2,3,'#3a78e8');
+    fr(4,9,6,7,'#24417a'); fr(5,10,4,5,'#3b63b5'); fr(6,12,2,2,'#f2b705'); }
+  else if(f.key==='copter'){ /* 동현콥 헬기: 머리 위 돌아가는 날개, 몸 아래 스키드 */
+    fr(16,-4,2,4,'#5d5b53'); const ph=(S.frame>>1)&3, w=[18,12,4,12][ph]; fr(17-w/2,-6,w,2,'#2bb0c8');
+    fr(2,19,16,1,'#2bb0c8'); fr(0,6+((S.frame>>1)&1),3,2,'#2bb0c8'); }
+  else if(f.key==='doom'){ /* 동현둠: 초록 철모·앞으로 든 산탄총 */
+    fr(12,-1,10,4,'#5a8f3a'); fr(13,-3,8,2,'#6fb04a'); fr(12,2,10,1,'#3e6b28');
+    fr(14,12,12,2,'#3b3f4a'); fr(13,14,4,2,'#7a4a22'); fr(25,11,2,3,'#231d18'); }
+  else if(f.key==='fly'){ /* 동현초 초파리: 몸 위 반투명 날개, 더듬이 */
+    const fl=(S.frame>>2)&1; fr(3,2+fl,9,6,'rgba(230,180,240,.75)'); fr(5,1+fl,9,6,'rgba(230,180,240,.6)');
+    fr(14,-3,1,3,'#2e2a38'); fr(19,-3,1,3,'#2e2a38'); fr(13,-4,2,1,'#2e2a38'); fr(19,-4,2,1,'#2e2a38'); }
 }
 function hero(g,S,cam){
   const h=S.hero; if(h.inv>0&&!h.flash&&!h.dead&&(S.frame>>2)&1) return;
   let key='P_idle'; if(h.dead) key='P_hurt'; else if(h.state==='attack') key='P_attack'; else if(h.state==='jump'||h.state==='fall') key='P_jump'; else if(h.state==='run') key=((h.anim>>3)&1)?'P_run1':'P_run2'; else if(h.inv>60) key='P_hurt';
-  const flip=h.dir<0, x=h.x-2-cam, y=h.y-2;
+  const flip=h.dir<0, x=h.x-4-cam, y=h.y-4;
   if(h.win){ key=(S.frame>>3)&1?'P_jump':'P_idle'; }
-  drawSprite(g,key,flip&&key==='P_attack'?x-2:x,y,flip);
+  drawSprite(g,key,x,y,flip);
   formOverlay(g,S,h,x,y,flip);
-  if(h.glide){ px(g,x+2,y+22,12,1,'rgba(43,176,200,.5)'); }
-  if(h.charge>0){ px(g,flip?x+16:x-6,y+8,6,10,'rgba(58,120,232,.35)'); }
+  if(h.glide){ px(g,x+2,y+21,20,1,'rgba(43,176,200,.5)'); }
+  if(h.charge>0){ px(g,flip?x-6:x+24,y+6,6,10,'rgba(58,120,232,.35)'); }
 }
 function enemies(g,S,cam){
   for(const e of S.enemies){ if(!e.alive) continue; const x=e.x-cam; if(x<-40||x>VW+40) continue;
