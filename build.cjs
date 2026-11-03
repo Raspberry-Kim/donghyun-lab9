@@ -3,7 +3,7 @@ const fs=require('fs'),path=require('path');
 const {copyIcons}=require('./icon-files.cjs');
 const root=__dirname,out=path.join(root,'dist'),src=n=>fs.readFileSync(path.join(root,'src',n),'utf8');
 fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});
-const js=['donghyun.js','sprites.js','data.js','engine.js','render.js','examples.js','sfx.js','app.js'].map(src).join('\n;\n');
+const js=['donghyun.js','sprites.js','data.js','engine.js','render.js','examples.js','sfx.js','gamepad.js','app.js'].map(src).join('\n;\n');
 let css=src('style.css');
 for(const name of fs.readdirSync(path.join(root,'fonts')))
   css=css.replaceAll('./fonts/'+name,'data:font/woff2;base64,'+fs.readFileSync(path.join(root,'fonts',name)).toString('base64'));

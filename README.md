@@ -1,4 +1,4 @@
-# 동현크 v0.01
+# 동현크 v0.02
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23914027.svg)](https://doi.org/10.5281/zenodo.23914027)
 
@@ -26,6 +26,8 @@
 
 ← → 달리기 · X 점프(길게 누르면 높이, 초파리는 2단 점프) · Z 공격 · S 변신 바꾸기 · A 지금 모습 설명 · Enter 메뉴(계속·변신 설명·포기) · M 효과음. 동현전·동현워와 같은 키 배치다. 좁은 화면과 터치 기기에서는 화면 버튼이 나온다.
 
+게임패드(닌텐도 배치): A 점프 · B 공격 · X 변신 · Y 설명 · + 메뉴 · 십자·왼 스틱 좌우. 블루투스·USB 게임패드를 OS에서 짝지어 두면 브라우저가 바로 읽는다(Gamepad API, Safari·Chrome·Firefox·아이폰 Safari). 단추를 한 번 누르면 "게임패드 연결됨"이 상태 줄에 뜬다. A·B가 뒤집혀 눌리는 패드는 −(Select)를 한 번 눌러 맞바꾼다(브라우저에 기억).
+
 ## 규칙 요약
 
 - 체력은 모습마다 다르고(기본 3), 맞으면 1 줄며 잠깐 무적이 된다. 체력 0이면 목숨 하나를 잃고 구역 입구에서 다시 시작한다.
@@ -34,7 +36,7 @@
 
 ## 파일
 
-- `src/` 원본(donghyun.js 실행기 · sprites.js 도트 · data.js 자료 · engine.js 규칙 · render.js 화면 · examples.js 예제 · sfx.js 효과음 · app.js 화면 연결)
+- `src/` 원본(donghyun.js 실행기 · sprites.js 도트 · data.js 자료 · engine.js 규칙 · render.js 화면 · examples.js 예제 · sfx.js 효과음 · gamepad.js 게임패드 · app.js 화면 연결)
 - `node build.cjs` → `dist/index.html`(단일 파일)과 루트 `index.html`
 - `qa/smoke.cjs` Playwright 점검(불러오기·무적 완주·목숨 1 패배)
 

@@ -212,6 +212,10 @@ th{background:var(--surface2);font-weight:700}
 #unit-table td,#unit-table th{white-space:nowrap;font-size:var(--text-xs)}
 #unit-table td:not(:first-child){font-family:var(--mono)}
 .key-table td:first-child{white-space:nowrap;width:1%}
+/* 게임패드 안내: 조작 줄의 덧말과 키 표의 꼬리표 */
+.pad-note{flex-basis:100%;color:var(--muted)}
+.pad-note::before{content:"";display:inline-block;width:1.8em;height:1.1em;margin-right:6px;vertical-align:-2px;border:1px solid var(--line);border-radius:999px 999px 8px 8px/70% 70% 8px 8px;background:var(--paper);box-shadow:0 1px 0 var(--line)}
+.pad-tag{display:inline-flex;align-items:center;height:1.8em;padding:0 .55em;font:var(--text-xs) var(--mono);line-height:1;background:var(--paper);border:1px solid var(--line);border-radius:999px;box-shadow:0 1px 0 var(--line);color:var(--ink);vertical-align:middle}
 .code-example{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px;font:var(--text-sm)/1.8 var(--mono);overflow-x:auto;white-space:pre}
 .co-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
 .co-grid article{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}
