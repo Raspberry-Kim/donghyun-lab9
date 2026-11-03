@@ -90,11 +90,11 @@ function enemies(g,S,cam){
     g.globalAlpha=1;
   }
 }
-/* 변신 배지 12×12: 모습 색의 둥근 칸에 첫 글자. 이미 변신했으면 흐리게(점수만) */
+/* 변신 배지: 지금 모습과 같은 배지만 흐리게(점수만) */
 const BADGE_ICON={tank:'tank',knight:'ic_knight',copter:'ic_copter',doom:'ic_doom',fly:'ic_fly'};
 function badge(g,S,it,x,y){
   /* 배지는 그 모습이 온 세계의 그림이다: 전차=동현전 전차, 기사=동현워 투구·방패, 헬기=동현콥 꼬리콥터, 둠=동현둠 철모·산탄총, 초파리=동현초 초파리 */
-  const f=FORMS[it.form]; if(!f) return; const dim=S.formI>0; if(dim) g.globalAlpha=0.45;
+  const f=FORMS[it.form]; if(!f) return; const dim=S.forms[S.formI]===it.form; if(dim) g.globalAlpha=0.45;
   const key=BADGE_ICON[f.key]; const bx=Math.round(x)-2, by=Math.round(y)-2;
   g.fillStyle='rgba(255,255,255,.35)'; g.fillRect(bx-1,by+13,18,3);
   if(key) drawSprite(g,key,bx,by,false); else { px(g,bx+2,by+2,12,12,f.color); }

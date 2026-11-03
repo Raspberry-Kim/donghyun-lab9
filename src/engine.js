@@ -28,10 +28,11 @@ function groundY(s,tx){ let y=0; while(y<ROWS&&!SOLID[tileAt(s,tx,y)]) y++; retu
 
 function newGame(cfg){
   const def=STAGES[cfg.stage-1], st=buildStage(def);
-  /* 변신은 한 판(스테이지 연속 진행 전체)에 한 번뿐이다. 출전 명령 2로 시작 모습을 정했거나(forms[0]) 앞 스테이지에서 변신했으면(carry.formId) 그 모습으로 시작한다 */
-  const startForm=(cfg.carry&&cfg.carry.formId)||(cfg.forms&&cfg.forms.find(f=>f>0))||0;
+  /* 변신 단추는 없다. 변신은 배지를 주울 때만 일어나고, 다른 배지를 주우면 또 그 모습으로 바뀐다. 목숨을 잃으면 출전 명령 2로 정한 시작 모습(기본은 포동이)으로 돌아온다. 앞 스테이지에서 변신한 모습(carry.formId)은 다음 스테이지 시작 모습으로 이어진다 */
+  const baseForm=(cfg.forms&&cfg.forms.find(f=>f>0))||0;
+  const startForm=(cfg.carry&&cfg.carry.formId)||baseForm;
   const forms=startForm?[0,startForm]:[0];
-  const S={stage:cfg.stage,def,W:st.W,grid:st.grid,zones:st.zones,flagX:st.flag,forms,formI:startForm?1:0,arena:st.arena,bossOn:false,boss:null,
+  const S={stage:cfg.stage,def,W:st.W,grid:st.grid,zones:st.zones,flagX:st.flag,forms,formI:startForm?1:0,baseForm,arena:st.arena,bossOn:false,boss:null,
     frame:0,score:(cfg.carry&&cfg.carry.score)|0,bones:0,lives:cfg.lives===0?Infinity:(cfg.lives||3),invincible:cfg.lives===0,time:0,status:'play',msg:null,msgT:0,camX:0,
     hero:null,enemies:[],items:[],shots:[],fx:[],events:[],rng:mulberry(cfg.seed||((Date.now()%2147483646)+1)),
     spawn:{x:def.start[0]*T,y:def.start[1]*T},checkpoint:null};
@@ -112,7 +113,7 @@ function step(S,keys){
   if(h.state==='run') h.anim+=Math.abs(h.vx)*0.9; else h.anim++;
   if(h.inv>0) h.inv--; if(h.flash>0) h.flash--;
   // 아이템
-  for(const it of S.items){ if(it.taken) continue; const r={x:it.px,y:it.py,w:it.type==='bone'?10:it.type==='form'?12:8,h:it.type==='bone'?7:it.type==='form'?12:6}; if(overlap(h,r)){ it.taken=true; if(it.type==='bone'){ S.bones++; S.score+=100; S.events.push({t:'bone'}); } else if(it.type==='form'){ S.score+=300; if(S.formI===0) transform(S,it.form); else { S.msg='이미 변신했다 · 배지 300점'; S.msgT=80; S.events.push({t:'bone'}); } } else { h.hp=Math.min(h.maxhp,h.hp+1); S.score+=200; S.events.push({t:'heart'}); } addFx(S,'spark',r.x+r.w/2,r.y); } }
+  for(const it of S.items){ if(it.taken) continue; const r={x:it.px,y:it.py,w:it.type==='bone'?10:it.type==='form'?12:8,h:it.type==='bone'?7:it.type==='form'?12:6}; if(overlap(h,r)){ it.taken=true; if(it.type==='bone'){ S.bones++; S.score+=100; S.events.push({t:'bone'}); } else if(it.type==='form'){ S.score+=300; if(S.forms[S.formI]!==it.form) transform(S,it.form); else { S.msg='같은 모습 · 배지 300점'; S.msgT=80; S.events.push({t:'bone'}); } } else { h.hp=Math.min(h.maxhp,h.hp+1); S.score+=200; S.events.push({t:'heart'}); } addFx(S,'spark',r.x+r.w/2,r.y); } }
   // 깃발
   if(S.flagX!=null&&!(S.boss&&S.boss.alive)&&h.x+h.w>S.flagX*T+6&&!h.win){ h.win=1; h.vx=0; S.score+=(1000+Math.max(0,3000-S.time)|0)+(S.lives===Infinity?0:S.lives*500); S.checkpoint=null; S.events.push({t:'win'}); }
   // 보스 싸움터: 들어서면 왼쪽 벽이 생긴다
@@ -150,8 +151,13 @@ function attack(S,h,f){
   else if(k==='shotgun'){ h.cool=48; for(let i=-1;i<=1;i++) S.shots.push({owner:'hero',x:h.dir>0?h.x+h.w:h.x-3,y:h.y+7+i*2,w:3,h:2,vx:h.dir*3.6,vy:i*0.9,life:14,dmg:1,alive:true,kind:'pellet',pierce:true}); }
 }
 function transform(S,fi){
-  const h=S.hero; S.forms=[0,fi]; S.formI=1; const nf=form(S); h.maxhp=nf.hp; h.hp=nf.hp; h.inv=Math.max(h.inv,30); h.flash=30; h.charge=0;
-  S.events.push({t:'swap',form:nf}); S.msg=nf.name+'으로 변신 · 되돌릴 수 없다'; S.msgT=110;
+  const h=S.hero; S.forms=fi?[0,fi]:[0]; S.formI=fi?1:0; const nf=form(S); h.maxhp=nf.hp; h.hp=nf.hp; h.inv=Math.max(h.inv,30); h.flash=30; h.charge=0;
+  S.events.push({t:'swap',form:nf}); S.msg=nf.name+'으로 변신'; S.msgT=110;
+}
+/* 목숨을 잃으면 시작 모습으로 돌아온다 */
+function revertForm(S){
+  const cur=S.forms[S.formI]; if(cur===S.baseForm) return false;
+  S.forms=S.baseForm?[0,S.baseForm]:[0]; S.formI=S.baseForm?1:0; return true;
 }
 function hitEnemy(S,e,dmg,how){
   const d=ENEMIES[e.type];
@@ -172,7 +178,8 @@ function die(S,by){ const h=S.hero; if(h.dead) return; if(S.invincible&&by!=='fa
 function respawn(S){
   if(S.lives!==Infinity) S.lives--; if(S.lives<=0){ S.status='over'; S.events.push({t:'over'}); return; }
   for(const e of S.enemies){ if(e.alive) continue; }
-  const at=S.checkpoint||S.spawn; S.shots=[]; spawnHero(S,{x:at.x,y:at.y}); S.hero.inv=90; S.camX=Math.max(0,Math.min(S.W*T-320,at.x-120)); S.events.push({t:'respawn'});
+  const at=S.checkpoint||S.spawn; S.shots=[]; const reverted=revertForm(S); spawnHero(S,{x:at.x,y:at.y}); S.hero.inv=90; S.camX=Math.max(0,Math.min(S.W*T-320,at.x-120)); S.events.push({t:'respawn'});
+  if(reverted){ S.events.push({t:'revert',form:form(S)}); S.msg=form(S).name+' 모습으로 돌아왔다'; S.msgT=100; }
   // 다시 시작 지점 주변 적은 제자리로
   for(const e of S.enemies){ if(!e.alive) continue; if(Math.abs(e.x-at.x)<200){ const d=ENEMIES[e.type]; e.charge=0; e.punch=0; e.punchBox=null; } }
 }

@@ -72,7 +72,7 @@ function parseSortie(out){
     if(i+1>=tok.length){ err.push(`명령 ${n}(${r[0]}) 뒤에 값이 없다.`); break; }
     const v=tok[++i];
     if(!r[2](v)){ err.push(`${r[0]} 값 ${v}은 쓸 수 없다. ${r[3]}만 된다.`); break; }
-    if(n===2){ if(c.forms.length&&c.forms[0]!==v){ err.push('시작 변신은 한 가지만 고른다. 한 번 변신하면 되돌릴 수 없다.'); break; } c.forms=[v]; }
+    if(n===2){ if(c.forms.length&&c.forms[0]!==v){ err.push('시작 변신은 한 가지만 고른다. 다른 모습은 스테이지의 배지로 바꾼다.'); break; } c.forms=[v]; }
     else c[r[1]]=v;
   }
   return {c,go,err};
@@ -136,7 +136,8 @@ function events(){
     if(ev.t==='die'){ log(ev.by==='fall'?'구덩이에 빠졌다.':`${hurtBy(ev.by)}에 쓰러졌다.`); }
     if(ev.t==='respawn') log(`다시 시작. 남은 목숨 ${S.lives===Infinity?'∞':S.lives}.`);
     if(ev.t==='zone') log(S.msg);
-    if(ev.t==='swap') log(`${ev.form.name}(${ev.form.from})으로 변신. 되돌릴 수 없다.`);
+    if(ev.t==='swap') log(`${ev.form.name}(${ev.form.from})으로 변신.`);
+    if(ev.t==='revert') log(`목숨을 잃어 ${ev.form.name} 모습으로 돌아왔다.`);
     if(ev.t==='win'){ if(S.stage<STAGES.length) stageClear(); else finish(true); }
     if(ev.t==='over') finish(false);
   }
@@ -146,7 +147,7 @@ const hurtBy=b=>({spike:'가시',punch:'슈슈의 글러브',shell:'포탄',lion
 function log(html){ const li=document.createElement('li'); li.innerHTML=esc(html); const l=$('#log'); l.prepend(li); while(l.children.length>40) l.lastChild.remove(); }
 function hud(){
   const h=S.hero, f=E.form(S);
-  $('#form-card').innerHTML=`<div class="form-now" style="--fc:${f.color}"><b>${f.name}</b><small>${f.from}</small><p>${f.desc}</p></div><div class="form-list"><small>${S.formI>0?'변신은 한 번뿐 · 되돌릴 수 없다. 남은 배지는 300점.':'변신 배지(전·기·헬·둠·초)를 주우면 그 모습으로 끝까지 간다. 한 번뿐이니 골라서 줍자.'}</small></div>`;
+  $('#form-card').innerHTML=`<div class="form-now" style="--fc:${f.color}"><b>${f.name}</b><small>${f.from}</small><p>${f.desc}</p></div><div class="form-list"><small>${S.forms[S.formI]!==S.baseForm?'다른 배지를 주우면 또 변신한다. 목숨을 잃으면 '+FORMS[S.baseForm].name+' 모습으로 돌아온다.':'변신 배지(전차·기사·헬기·둠·초파리)를 주우면 그 모습이 된다. 변신 단추는 없다.'}</small></div>`;
   $('#info-card').innerHTML=[['스테이지',`${S.stage} / ${STAGES.length}`],['체력',`${h.hp} / ${h.maxhp}`],['목숨',S.lives===Infinity?'무적 · 무한':String(S.lives)],['뼈다귀',String(S.bones)],['점수',S.score.toLocaleString('ko-KR')],['시간',Math.floor(S.time/60)+'초']].map(([a,b])=>`<div><span>${a}</span><strong>${b}</strong></div>`).join('');
   $('#turn-badge').textContent=zoneName(); $('#turn-badge').className='';
 }
@@ -175,7 +176,7 @@ function clearCard(){
 function nextStage(){
   if(!S||mode!=='clear') return;
   const carry={score:S.score,formId:S.formI>0?S.forms[S.formI]:0}, stage=S.stage+1;
-  S=E.newGame({stage,lives:cfg.lives,forms:[],carry}); mode='play'; paused=false; closeMenu(); $('#result-card').hidden=true; last=0;
+  S=E.newGame({stage,lives:cfg.lives,forms:cfg.forms||[],carry}); mode='play'; paused=false; closeMenu(); $('#result-card').hidden=true; last=0;
   log(`스테이지 ${stage} · ${STAGES[stage-1].name} · 출발. 목숨 ${cfg.lives===0?'무적':cfg.lives}${carry.formId?` · ${FORMS[carry.formId].name} 그대로`:''}.`);
   $('#day').textContent=`스테이지 ${stage} · ${STAGES[stage-1].name}`; $('#tile-info').textContent=STAGES[stage-1].note;
   $('#hint').innerHTML=HINT0; status('진행 중'); hud(); $('#board-wrap').focus({preventScroll:true});
@@ -219,6 +220,7 @@ function restore(data){
   const st=data.state, def=STAGES[(st?.stage|0)-1];
   if(!def||st.W!==def.W||!Array.isArray(st.grid)||st.grid.length!==E.ROWS||st.grid.some(r=>!Array.isArray(r)||r.length!==def.W)) throw new Error('스테이지 정보가 맞지 않는다.');
   if(!Array.isArray(st.forms)||!st.forms.length||st.forms.some(f=>!FORMS[f])||!(st.formI>=0&&st.formI<st.forms.length)) throw new Error('변신 정보가 맞지 않는다.');
+  if(!(st.baseForm>=0&&FORMS[st.baseForm])) st.baseForm=0; /* v0.04 이전 저장본 */
   if(!Array.isArray(st.enemies)||st.enemies.some(e=>!ENEMIES[e.type])) throw new Error('적 정보가 맞지 않는다.');
   if(st.lives==='inf') st.lives=Infinity; else if(!(Number.isInteger(st.lives)&&st.lives>=1&&st.lives<=99)) throw new Error('목숨 정보가 맞지 않는다.');
   if(!st.hero||!(st.hero.x>=0&&st.hero.x<=def.W*16)) throw new Error('포동이 위치가 맞지 않는다.');

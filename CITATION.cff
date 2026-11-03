@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata below."
 title: "Donghyuncr (동현크): a single-player side-scrolling action platformer laboratory set up through the esoteric language Donghyun-lang"
 type: software
-version: "0.04"
+version: "0.05"
 date-released: "2026-11-03"
 doi: "10.5281/zenodo.23914027"
 authors:
@@ -22,8 +22,9 @@ abstract: >-
   A key info, d-pad or left stick = left/right, + = Enter), or with on-screen
   buttons, using the same key layout as Donghyunjeon and Donghyunwar. Stages
   are played in sequence (score carried over, lives refilled), transformation
-  badges placed in every stage change the hero's form once and irreversibly,
-  and the third stage ends with a boss fight against the Neotank of
+  badges placed in every stage change the hero's form (there is no transform
+  button; losing a life returns the hero to the starting form), and the third
+  stage ends with a boss fight against the Neotank of
   Donghyunjeon. The hero is Podong-i, the author's dog; enemies and
   transformations are borrowed from the other Donghyun laboratories. Its
   overall structure (run-and-jump stages, switchable forms) is inspired by the
