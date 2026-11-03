@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "Donghyuncr (동현크): a single-player side-scrolling action platformer laboratory set up through the esoteric language Donghyun-lang"
+type: software
+version: "0.01"
+date-released: "2026-11-03"
+authors:
+  - family-names: Kim
+    given-names: Dong Hyun
+    orcid: "https://orcid.org/0000-0001-9883-0229"
+    affiliation: "Inha University College of Medicine"
+license: MIT
+repository-code: "https://github.com/Raspberry-Kim/donghyun-lab9"
+abstract: >-
+  Donghyuncr is a browser-based, noncommercial side-scrolling action
+  platformer for one player. The number of lives (0 = invincible), the set of
+  up to four transformations and the stage are chosen only through programs
+  written in the esoteric programming language Donghyun-lang; the stage itself
+  is played with the keyboard or on-screen buttons, using the same key layout
+  as Donghyunjeon and Donghyunwar. The hero is Podong-i, the author's dog;
+  enemies and transformations are borrowed from the other Donghyun
+  laboratories. Its overall structure (run-and-jump stages, switchable forms)
+  is inspired by the Game Boy game Crayon Shin-chan 4 (1996); it contains none
+  of that game's graphics, sound, level layouts, text or characters, and omits
+  its arcade mini-games. Crayon Shin-chan is the work of Yoshito Usui and
+  Futabasha; this work is not affiliated with or endorsed by them or Bandai.
+  The MIT license applies to the application code, documentation and original
+  artwork only; the fonts are under the SIL Open Font License, and the name and
+  likeness of Podong-i remain with the author. See LICENSE and CREDITS.md.
+keywords:
+  - platform game
+  - pixel art
+  - esoteric programming language
+  - JavaScript
+references:
+  - type: software
+    title: "Donghyun-lang (동현랭): a Korean esoteric programming language with a browser playground"
+    authors:
+      - family-names: Kim
+        given-names: Dong Hyun
+        orcid: "https://orcid.org/0000-0001-9883-0229"
+        affiliation: "Inha University College of Medicine"
+    version: "1.55"
+    license: MIT
+    repository-code: "https://github.com/Raspberry-Kim/donghyun-lang"
