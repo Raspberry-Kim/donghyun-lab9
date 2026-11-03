@@ -4,6 +4,7 @@ title: "Donghyuncr (동현크): a single-player side-scrolling action platformer
 type: software
 version: "0.01"
 date-released: "2026-11-03"
+doi: "10.5281/zenodo.23914027"
 authors:
   - family-names: Kim
     given-names: Dong Hyun
