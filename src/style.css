@@ -153,6 +153,8 @@ a.series-item:hover{background:#fff0c6;border-color:#b99542;transform:translateY
 .sortie-card>div{background:var(--paper);padding:8px 10px;min-width:0}
 .sortie-card span{display:block;font:var(--text-xs) var(--mono);color:var(--muted)}
 .sortie-card strong{display:block;font-size:var(--text-sm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 데스크톱: 칸이 내용 길이만큼 넓어지고 줄 끝까지 채워 빈칸을 없앤다(모바일 2열은 그대로) */
+@media(min-width:481px){.sortie-card{display:flex;flex-wrap:wrap}.sortie-card>div{flex:1 1 auto}}
 #result{font-size:var(--text-xs);line-height:1.8;color:var(--muted);min-height:42px;margin-top:10px;overflow-wrap:anywhere}
 #result[data-kind=error]{color:var(--error)}
 .file-row{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:12px;margin-top:8px}
