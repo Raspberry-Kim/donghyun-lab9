@@ -362,3 +362,17 @@ html{touch-action:manipulation}.stage-full,.board-stage,#board,.touchpad,.dpad,.
 .maker-note a.sponsor-btn:hover{background:var(--surface2)}
 .maker-note a.sponsor-btn svg{color:#bf3989;flex:none}
 [data-theme=dark] .maker-note a.sponsor-btn{color:var(--ink)}[data-theme=dark] .maker-note a.sponsor-btn svg{color:#db61a2}
+
+/* 설정 번호 표: 편집기 아래에 접어 둔다(동현삼·동현항과 같은 모양) */
+.lang-rule{margin-top:10px;border-top:1px solid var(--line)}
+.lang-rule summary{min-height:44px;display:flex;align-items:center;gap:6px;cursor:pointer;font-size:var(--text-sm);font-weight:700;list-style:none}
+.lang-rule summary::-webkit-details-marker{display:none}
+.lang-rule summary::before{content:'▸';font-size:.75rem;color:var(--muted)}
+.lang-rule[open] summary::before{content:'▾'}
+.lang-rule .table-wrap{overflow-x:auto;max-width:100%}
+.lang-rule table{border-collapse:collapse;width:100%;font-size:var(--text-xs);font-variant-numeric:tabular-nums}
+.lang-rule th,.lang-rule td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top;line-height:1.6}
+.lang-rule th{background:var(--surface2);font-weight:700;white-space:nowrap}
+.lang-rule td{color:var(--muted);word-break:keep-all}
+.lang-rule td:first-child,.lang-rule td:nth-child(2){color:var(--ink);font-weight:700;white-space:nowrap}
+.lang-rule td:last-child{white-space:nowrap}

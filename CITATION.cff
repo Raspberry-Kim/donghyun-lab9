@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata below."
 title: "Donghyuncr (동현크): a single-player side-scrolling action platformer laboratory set up through the esoteric language Donghyun-lang"
 type: software
-version: "0.16"
+version: "0.17"
 date-released: "2026-11-11"
 doi: "10.5281/zenodo.23914027"
 authors:
