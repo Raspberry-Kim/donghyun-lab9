@@ -4,30 +4,63 @@
 const {T,ROWS,FORMS,ENEMIES}=root.DATA, SP=root.Sprites;
 const VW=320, VH=ROWS*T;
 const TILE_COL={
-  grass:{top:'#5fb44a',top2:'#8fd36a',body:'#a56d3f',body2:'#8c5a33',edge:'#6b4426'},
-  stone:{top:'#9aa0ad',top2:'#c3c8d2',body:'#6f7584',body2:'#5c6170',edge:'#3f4350'},
-  brick:{top:'#c9664a',top2:'#e08a6e',body:'#9c4a35',body2:'#7f3a2a',edge:'#4f2419'}
+  grass:{top:'#668965',top2:'#a2b98a',body:'#a28a68',body2:'#897457',edge:'#58674d'},
+  stone:{top:'#8a9a9b',top2:'#c4ccc0',body:'#6d8088',body2:'#5a6e78',edge:'#3e525e'},
+  brick:{top:'#ad7b64',top2:'#d1ab8a',body:'#8c6459',body2:'#76554e',edge:'#4e4244'}
 };
+/* 색은 그리기 단계에서만 고른다. 저장된 구역·발판·적의 배치는 바꾸지 않는다. */
+const ATMOS=[
+  {grass:['#86adb3','#e4dfc2','#a5b89d'],stone:['#94a6b1','#dddccf','#99a7aa'],brick:['#b49b8c','#e8d6b7','#ad9b87']},
+  {grass:['#c6947b','#efcfab','#b1a082'],stone:['#8e95a9','#d9c9bb','#9796a0'],brick:['#737f91','#c5aca2','#898591']},
+  {grass:['#819c98','#d2d9c4','#8eaaa0'],stone:['#667e94','#b8c6ca','#7f96a6'],brick:['#8f757c','#d2b4a2','#9b8c8d']}
+];
+function atmosphere(S,z){const p=ATMOS[(S.stage-1)%3][z.ground];return {sky:p.slice(0,2),hill:p[2]};}
 function zoneAt(S,tx){ let z=S.zones[0]; for(const q of S.zones) if(tx>=q.x) z=q; return z; }
 function px(g,x,y,w,h,c){ g.fillStyle=c; g.fillRect(x|0,y|0,w,h); }
-let bgCache={};
 function background(g,S,cam){
   const zx=Math.floor((cam+160)/T), z=zoneAt(S,zx);
   // 하늘: 구역 색을 부드럽게 섞는다
   const next=S.zones.find(q=>q.x>zx); let mix=0; if(next){ const d=next.x*T-(cam+160); if(d<160) mix=1-d/160; }
-  const sky=lerpPair(z.sky,next?next.sky:z.sky,mix), hill=lerpCol(z.hill,next?next.hill:z.hill,mix);
+  const a=atmosphere(S,z),b=next?atmosphere(S,next):a;
+  const sky=lerpPair(a.sky,b.sky,mix), hill=lerpCol(a.hill,b.hill,mix);
   const gr=g.createLinearGradient(0,0,0,VH); gr.addColorStop(0,sky[0]); gr.addColorStop(1,sky[1]); g.fillStyle=gr; g.fillRect(0,0,VW,VH);
   // 구름(느린 시차)
-  g.fillStyle='rgba(255,255,255,.75)';
-  for(let i=0;i<7;i++){ const cx=((i*97+((S.frame*0.15)|0)-cam*0.2)%(VW+80)+VW+80)%(VW+80)-40, cy=14+((i*37)%50); px(g,cx,cy,22,6,'rgba(255,255,255,.8)'); px(g,cx+5,cy-4,12,4,'rgba(255,255,255,.8)'); }
+  // 구름의 넓은 밝은 면은 줄이고, 해와 얕은 능선으로 깊이를 둔다.
+  g.fillStyle='#eee0b7';g.beginPath();g.arc(260-cam*.025%30,38,10,0,Math.PI*2);g.fill();
+  for(let i=0;i<5;i++){ const cx=((i*97+((S.frame*0.08)|0)-cam*0.16)%(VW+80)+VW+80)%(VW+80)-40, cy=24+((i*37)%44); px(g,cx,cy,30,3,'rgba(244,237,216,.45)'); px(g,cx+7,cy-3,17,3,'rgba(244,237,216,.45)'); }
+  g.fillStyle=lerpCol(hill,sky[1],.48);
+  for(let i=-1;i<6;i++){const bx=i*112+((-cam*.2%112)+112)%112;g.beginPath();g.moveTo(bx-30,VH);g.quadraticCurveTo(bx+30,54+(i%2)*12,bx+100,VH);g.fill();}
   // 먼 언덕(시차 0.4)
   g.fillStyle=hill; const off=-cam*0.4;
   for(let i=-1;i<8;i++){ const bx=i*96+((off%96)+96)%96; g.beginPath(); g.moveTo(bx-20,VH); g.quadraticCurveTo(bx+28,88-(i%2)*18,bx+76,VH); g.fill(); }
   // 구역별 가까운 배경(시차 0.7)
-  const off2=-cam*0.7; g.fillStyle='rgba(0,0,0,.14)';
-  if(z.ground==='grass'){ for(let i=-1;i<8;i++){ const bx=i*72+((off2%72)+72)%72; px(g,bx+10,130,6,30,'rgba(60,40,20,.35)'); g.beginPath(); g.arc(bx+13,124,14,0,7); g.fillStyle='rgba(40,110,50,.45)'; g.fill(); } }
-  else if(z.ground==='stone'){ for(let i=-1;i<8;i++){ const bx=i*64+((off2%64)+64)%64; px(g,bx,118,40,42,'rgba(70,75,90,.55)'); for(let k=0;k<4;k++) px(g,bx+k*10,112,6,6,'rgba(70,75,90,.55)'); px(g,bx+16,136,8,12,'rgba(30,32,40,.6)'); } }
-  else { for(let i=-1;i<8;i++){ const bx=i*80+((off2%80)+80)%80; px(g,bx,124,30,36,'rgba(90,60,45,.5)'); px(g,bx+34,96,8,64,'rgba(90,60,45,.5)'); px(g,bx+30,90,16,6,'rgba(50,30,20,.6)'); const sm=(S.frame/3+i*7)%40; px(g,bx+36-sm*0.2,84-sm,6,5,'rgba(80,80,80,'+(0.35*(1-sm/40))+')'); } }
+  const off2=-cam*0.7, far=lerpCol(hill,'#405b60',.38), edge=lerpCol(far,'#e1ddc6',.24);
+  if(z.ground==='grass'){ for(let i=-1;i<8;i++){
+    const bx=i*72+((off2%72)+72)%72, y=118+(i%2)*7;
+    px(g,bx+10,y+5,3,40,'#758271');
+    px(g,bx+10,y-4,2,21,'#758271');
+    const leaf=(x,yy,w,h,col)=>{px(g,x+3,yy,w-6,h,col);px(g,x,yy+3,w,h-6,col);};
+    leaf(bx+1,y-12,22,22,far);leaf(bx+3,y-20,17,18,far);
+    leaf(bx+2,y-13,14,13,edge);leaf(bx+6,y-20,10,11,edge);
+    px(g,bx+4,y-5,5,1,far);px(g,bx+10,y-16,4,1,far);
+    px(g,bx+14,y+5,5,1,lerpCol(far,'#344d4d',.16));
+  } }
+  else if(z.ground==='stone'){ for(let i=-1;i<8;i++){
+    const bx=i*64+((off2%64)+64)%64, y=109+(i%2)*9;
+    px(g,bx,y,42,160-y,far);px(g,bx-1,y,44,2,edge);
+    for(let k=0;k<4;k++)px(g,bx+k*12,y-5,6,5,far);
+    px(g,bx+4,y+4,2,44,edge);px(g,bx+35,y+4,2,44,edge);
+    for(let k=0;k<2;k++){px(g,bx+12+k*14,y+10,5,12,lerpCol(far,'#344650',.3));px(g,bx+12+k*14,y+9,5,1,edge);}
+    px(g,bx,y+28,42,1,edge);
+  } }
+  else { for(let i=-1;i<8;i++){
+    const bx=i*80+((off2%80)+80)%80;
+    px(g,bx,122,38,38,far);px(g,bx-1,120,40,2,edge);
+    g.fillStyle=far;g.beginPath();g.moveTo(bx,120);g.lineTo(bx+12,110);g.lineTo(bx+12,120);g.lineTo(bx+25,110);g.lineTo(bx+25,120);g.lineTo(bx+38,110);g.lineTo(bx+38,122);g.lineTo(bx,122);g.fill();
+    for(let k=0;k<4;k++){px(g,bx+4+k*8,129,5,7,edge);px(g,bx+4+k*8,141,5,7,edge);}
+    px(g,bx+46,91,7,69,far);px(g,bx+44,89,11,3,edge);px(g,bx+46,105,7,2,edge);
+    const sm=(S.frame/3+i*7)%40;px(g,bx+48-sm*.2,83-sm,8,4,'rgba(105,112,116,'+(.23*(1-sm/40))+')');
+  } }
 }
 function lerpCol(a,b,t){ if(t<=0) return a; const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)); const A=p(a),B=p(b); return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join(''); }
 function lerpPair(a,b,t){ return [lerpCol(a[0],b[0],t),lerpCol(a[1],b[1],t)]; }
@@ -35,10 +68,10 @@ function tiles(g,S,cam){
   const x0=Math.floor(cam/T), x1=Math.min(S.W-1,x0+21);
   for(let tx=x0;tx<=x1;tx++){ const z=zoneAt(S,tx), c=TILE_COL[z.ground]; const sx=tx*T-cam;
     for(let ty=0;ty<ROWS;ty++){ const t=S.grid[ty][tx]; if(t==='.') continue; const sy=ty*T;
-      if(t==='#'){ px(g,sx,sy,T,T,c.body); px(g,sx,sy,T,5,c.top); px(g,sx,sy,T,2,c.top2); if(z.ground==='grass'){ px(g,sx+3,sy-2,2,2,c.top); px(g,sx+10,sy-3,2,3,c.top2); } px(g,sx+4,sy+9,3,2,c.body2); px(g,sx+11,sy+12,2,2,c.body2); }
-      else if(t==='='){ px(g,sx,sy,T,T,c.body); px(g,sx+2,sy+4,3,2,c.body2); px(g,sx+9,sy+10,4,2,c.body2); px(g,sx+12,sy+2,2,2,c.body2); }
-      else if(t==='B'){ px(g,sx,sy,T,T,c.edge); px(g,sx+1,sy+1,14,6,c.top); px(g,sx+1,sy+9,6,6,c.top); px(g,sx+9,sy+9,6,6,c.top); px(g,sx+1,sy+1,14,2,c.top2); }
-      else if(t==='-'){ px(g,sx,sy,T,4,'#8a5a2b'); px(g,sx,sy,T,1,'#c58b4a'); px(g,sx+2,sy+4,2,4,'#5e3a18'); px(g,sx+12,sy+4,2,4,'#5e3a18'); }
+      if(t==='#'){ px(g,sx,sy,T,T,c.body); px(g,sx,sy,T,4,c.top); px(g,sx,sy,T,1,c.top2);px(g,sx,sy+4,T,1,c.edge); if(z.ground==='grass'&&tx%3===1){ px(g,sx+3,sy-2,1,2,c.top); px(g,sx+9,sy-2,2,2,c.top2); } px(g,sx+4,sy+9,3,1,c.body2); px(g,sx+11,sy+12,2,1,c.body2); }
+      else if(t==='='){ px(g,sx,sy,T,T,c.body); px(g,sx+2,sy+4,3,1,c.body2); px(g,sx+9,sy+10,4,1,c.body2); if(z.ground==='grass'){px(g,sx,sy+12,T,1,c.body2);if(tx%3===0)px(g,sx+7,sy+2,2,2,c.top2);}else{px(g,sx,sy+7,T,1,c.body2);px(g,sx+((ty&1)?4:12),sy,1,7,c.body2);} }
+      else if(t==='B'){ px(g,sx,sy,T,T,c.body2); px(g,sx,sy,15,7,c.top); px(g,sx,sy+8,7,7,c.top); px(g,sx+8,sy+8,7,7,c.top); px(g,sx+1,sy+1,13,1,c.top2);px(g,sx+1,sy+9,5,1,c.top2);px(g,sx+9,sy+9,5,1,c.top2); }
+      else if(t==='-'){ px(g,sx,sy,T,4,'#7b735c'); px(g,sx,sy,T,1,'#c7b28c'); px(g,sx+2,sy+4,2,4,'#51594f'); px(g,sx+12,sy+4,2,4,'#51594f'); }
       else if(t==='^'){ for(let i=0;i<4;i++){ g.fillStyle='#d8d8e0'; g.beginPath(); g.moveTo(sx+i*4,sy+T); g.lineTo(sx+i*4+2,sy+6); g.lineTo(sx+i*4+4,sy+T); g.fill(); } px(g,sx,sy+14,T,2,'#555'); }
     }
   }
@@ -141,7 +174,7 @@ function items(g,S,cam){
 }
 function hud(g,S){
   const h=S.hero, f=root.Engine.form(S);
-  g.fillStyle='rgba(0,0,0,.35)'; g.fillRect(0,0,VW,14);
+  g.fillStyle='#2f4147'; g.fillRect(0,0,VW,14);px(g,0,13,VW,1,'#92a39a');
   for(let i=0;i<h.maxhp;i++) drawSprite(g,'heart',4+i*10,3,false), (i>=h.hp&&(px(g,4+i*10,3,8,6,'rgba(30,30,40,.75)')));
   g.font='bold 8px Pretendard, sans-serif'; g.textBaseline='top'; g.fillStyle='#fff';
   g.fillText(S.lives===Infinity?'×∞ 무적':'×'+S.lives,6+h.maxhp*10,3);
