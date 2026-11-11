@@ -376,3 +376,16 @@ html{touch-action:manipulation}.stage-full,.board-stage,#board,.touchpad,.dpad,.
 .lang-rule td{color:var(--muted);word-break:keep-all}
 .lang-rule td:first-child,.lang-rule td:nth-child(2){color:var(--ink);font-weight:700;white-space:nowrap}
 .lang-rule td:last-child{white-space:nowrap}
+
+
+/* SERIES-19: 데스크톱은 동현랭 두 줄 높이 + 18실험실 9열×2줄. 모바일은 기존 홀수 규칙. */
+@media(min-width:781px){
+ .series-strip .series-links:has(.series-item:nth-child(19):last-child){grid-template-columns:repeat(10,minmax(0,1fr));grid-template-rows:repeat(2,1fr);grid-auto-flow:row;min-width:0}
+ .series-strip .series-links:has(.series-item:nth-child(19):last-child) .series-item[data-series="lang"]{grid-column:auto;grid-row:span 2;align-items:center;text-align:center}
+ .series-strip .series-links:has(.series-item:nth-child(19):last-child) .series-item[data-series="lang"] .series-name{font-size:19px}
+ .series-strip .series-links:has(.series-item:nth-child(19):last-child) .series-note{white-space:normal}
+}
+@media(max-width:780px){
+ .series-strip .series-links:has(.series-item:nth-child(19):last-child){grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none}
+ .series-strip .series-links:has(.series-item:nth-child(19):last-child) .series-item[data-series="lang"]{grid-column:span 2;grid-row:auto}
+}
