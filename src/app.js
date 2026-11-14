@@ -108,7 +108,7 @@ function preview(c){ previewS=E.newGame({stage:c.stage,lives:c.lives,forms:c.for
 function fit(){
   if(!canvas.width) return;
   const full=document.getElementById('stage-full');
-  if(full&&full.classList.contains('fs')){ /* 전체 화면: 띠와 화면 단추를 뺀 자리에 비율을 지켜 최대로 */
+  if(full&&full.classList.contains('fs')){ /* 전체 화면: 띠와 화면 버튼을 뺀 자리에 비율을 지켜 최대로 */
     const side=full.classList.contains('side'), cs=getComputedStyle(full), h=el=>el&&el.offsetHeight||0;
     let aw=full.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight), ah=full.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
     if(side) aw-=2*190+20; else ah-=h(full.querySelector('.board-top'))+h(full.querySelector('.board-bottom'))+h(full.querySelector('.touchpad'))+30;
@@ -157,7 +157,7 @@ const hurtBy=b=>({spike:'가시',punch:'슈슈의 글러브',shell:'포탄',lion
 function log(html){ const li=document.createElement('li'); li.innerHTML=esc(html); const l=$('#log'); l.prepend(li); while(l.children.length>40) l.lastChild.remove(); }
 function hud(){
   const h=S.hero, f=E.form(S);
-  $('#form-card').innerHTML=`<div class="form-now" style="--fc:${f.color}"><b>${f.name}</b><small>${f.from}</small><p>${f.desc}</p></div><div class="form-list"><small>${S.forms[S.formI]!==S.baseForm?'다른 배지를 주우면 또 변신한다. 목숨을 잃으면 '+FORMS[S.baseForm].name+' 모습으로 돌아온다.':'변신 배지(전차·기사·헬기·둠·초파리)를 주우면 그 모습이 된다. 변신 단추는 없다.'}</small></div>`;
+  $('#form-card').innerHTML=`<div class="form-now" style="--fc:${f.color}"><b>${f.name}</b><small>${f.from}</small><p>${f.desc}</p></div><div class="form-list"><small>${S.forms[S.formI]!==S.baseForm?'다른 배지를 주우면 또 변신한다. 목숨을 잃으면 '+FORMS[S.baseForm].name+' 모습으로 돌아온다.':'변신 배지(전차·기사·헬기·둠·초파리)를 주우면 그 모습이 된다. 변신 버튼은 없다.'}</small></div>`;
   $('#info-card').innerHTML=[['스테이지',`${S.stage} / ${STAGES.length}`],['체력',`${h.hp} / ${h.maxhp}`],['목숨',S.lives===Infinity?'무적 · 무한':String(S.lives)],['뼈다귀',String(S.bones)],['점수',S.score.toLocaleString('ko-KR')],['시간',Math.floor(S.time/60)+'초']].map(([a,b])=>`<div><span>${a}</span><strong>${b}</strong></div>`).join('');
   $('#turn-badge').textContent=zoneName(); $('#turn-badge').className='';
 }
