@@ -1,8 +1,8 @@
 /* 게임패드 — 블루투스·USB 패드를 브라우저 Gamepad API로 읽는다(동현랭 시리즈 공통).
-   기준은 닌텐도 배치다. 다이아몬드 네 단추를 '자리'로 키보드와 짝 맞춘다: 오른쪽(A)=X키, 아래(B)=Z키, 위(X)=S키, 왼쪽(Y)=A키.
+   기준은 닌텐도 배치다. 다이아몬드 네 버튼을 '자리'로 키보드와 짝 맞춘다: 오른쪽(A)=X키, 아래(B)=Z키, 위(X)=S키, 왼쪽(Y)=A키.
    브라우저의 표준 배치(mapping "standard")는 자리 기준이다: 0 아래, 1 오른쪽, 2 왼쪽, 3 위, 4 L, 5 R, 8 −, 9 +, 12~15 십자, 왼 스틱은 축 0·1.
    그래서 닌텐도·8BitDo(닌텐도 배열) 패드는 아무 설정 없이 A=X키·B=Z키가 된다.
-   드물게 OS·브라우저가 네 단추를 자리 대신 글자 순서(A=0, B=1, X=2, Y=3)로 뒤집어 보고하면 A와 B, X와 Y가 서로 바뀌어 들어온다.
+   드물게 OS·브라우저가 네 버튼을 자리 대신 글자 순서(A=0, B=1, X=2, Y=3)로 뒤집어 보고하면 A와 B, X와 Y가 서로 바뀌어 들어온다.
    그때는 −(Select)를 한 번 눌러 바꾼다(다시 누르면 원래대로). 선택은 패드 이름별로 브라우저에 남는다. 첫 누름을 삼키거나 자동으로 맞추는 일은 없다.
    게임 쪽은 start({down(k), up(k), status(t), hint, repeat})로 붙는다. k는 키보드와 같은 이름(x·z·s·a·up·down·left·right·enter·shift)이다. */
 var GP=(function(){
@@ -30,7 +30,7 @@ var GP=(function(){
         var k=i<=3?D[i]:OTHER[i]; if(k) want[k]=true; }
       var ax=p.axes[0]||0, ay=p.axes[1]||0; if(ax<-0.5) want.left=true; if(ax>0.5) want.right=true; if(ay<-0.5) want.up=true; if(ay>0.5) want.down=true; });
     if(sel&&!lastSel&&selPad){ swap[selPad.id]=!swap[selPad.id]; save(); for(var h2 in held) release(h2); want={};
-      if(cb.status) cb.status('게임패드 단추 자리 '+(swap[selPad.id]?'바꿈':'원래대로')+' · A=X키 · B=Z키'+(cb.hint?' · '+cb.hint:'')+' · −로 되돌린다'); }
+      if(cb.status) cb.status('게임패드 버튼 자리 '+(swap[selPad.id]?'바꿈':'원래대로')+' · A=X키 · B=Z키'+(cb.hint?' · '+cb.hint:'')+' · −로 되돌린다'); }
     lastSel=sel;
     for(var k3 in want) if(!held[k3]) press(k3);
     for(var k4 in held) if(held[k4]&&!want[k4]) release(k4);

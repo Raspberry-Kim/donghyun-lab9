@@ -320,7 +320,7 @@ sup.tm{font-size:.55em;line-height:0;vertical-align:super;margin-left:.08em;lett
 .mark-tip::before{content:"";position:absolute;top:-6px;left:var(--ax,50%);width:12px;height:12px;background:#1f1c18;transform:translateX(-50%) rotate(45deg);border-radius:2px}
 @media(max-width:780px){.model-stamp{display:flex!important;justify-content:flex-end;margin-top:8px}.model-stamp>:not(.input-marks){display:none}.input-marks{margin-top:0;gap:22px}.input-marks svg{width:36px;height:36px}}
 
-/* 전체 화면(동현둠과 같은 규칙): 무대 칸 전체를 띄우고 오른쪽 위에 닫기 단추. 요소 전체 화면을 못 쓰는 기기(iPhone Safari)는 창을 가득 채우는 유사 전체 화면 */
+/* 전체 화면(동현둠과 같은 규칙): 무대 칸 전체를 띄우고 오른쪽 위에 닫기 버튼. 요소 전체 화면을 못 쓰는 기기(iPhone Safari)는 창을 가득 채우는 유사 전체 화면 */
 .stage-full{position:relative}
 .board-bar{display:flex;justify-content:flex-end;margin-top:8px}
 .board-bar .small-btn:disabled{opacity:.45;cursor:default}
@@ -335,7 +335,7 @@ html.pseudo-full-on,html.pseudo-full-on body{overflow:hidden;overscroll-behavior
 .stage-full.fs .board-stage{flex:0 0 auto;max-width:100%}
 .stage-full.fs .touchpad.on{width:100%;max-width:720px;margin:0}
 .stage-full.fs .touchpad.on .dpad,.stage-full.fs .touchpad.on .pad-keys button{box-shadow:0 0 0 1px rgba(255,255,255,.15)}
-/* 가로로 긴 휴대폰·태블릿: 남는 양옆에 위·아래 띠를 세로로 세우고, 화면 단추는 그 밑에 나눠 둔다 */
+/* 가로로 긴 휴대폰·태블릿: 남는 양옆에 위·아래 띠를 세로로 세우고, 화면 버튼은 그 밑에 나눠 둔다 */
 .stage-full.fs.side{display:grid;grid-template-columns:minmax(190px,1fr) auto minmax(190px,1fr);grid-template-rows:minmax(0,1fr) auto;align-items:start;justify-items:stretch}
 .stage-full.fs.side .board-top{grid-area:1/1/2/2;flex-direction:column;align-items:flex-start;justify-content:flex-start;padding:0;gap:6px}
 .stage-full.fs.side .board-stage{grid-area:1/2/3/3;align-self:center}

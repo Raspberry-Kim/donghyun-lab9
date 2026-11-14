@@ -28,7 +28,7 @@ function groundY(s,tx){ let y=0; while(y<ROWS&&!SOLID[tileAt(s,tx,y)]) y++; retu
 
 function newGame(cfg){
   const def=STAGES[cfg.stage-1], st=buildStage(def);
-  /* 변신 단추는 없다. 변신은 배지를 주울 때만 일어나고, 다른 배지를 주우면 또 그 모습으로 바뀐다. 목숨을 잃으면 출전 명령 2로 정한 시작 모습(기본은 포동이)으로 돌아온다. 앞 스테이지에서 변신한 모습(carry.formId)은 다음 스테이지 시작 모습으로 이어진다 */
+  /* 변신 버튼은 없다. 변신은 배지를 주울 때만 일어나고, 다른 배지를 주우면 또 그 모습으로 바뀐다. 목숨을 잃으면 출전 명령 2로 정한 시작 모습(기본은 포동이)으로 돌아온다. 앞 스테이지에서 변신한 모습(carry.formId)은 다음 스테이지 시작 모습으로 이어진다 */
   const baseForm=(cfg.forms&&cfg.forms.find(f=>f>0))||0;
   const startForm=(cfg.carry&&cfg.carry.formId)||baseForm;
   const forms=startForm?[0,startForm]:[0];
