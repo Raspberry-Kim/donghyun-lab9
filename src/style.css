@@ -207,7 +207,7 @@ kbd{display:inline-flex;align-items:center;justify-content:center;min-width:1.8e
 .document{max-width:1080px;margin:auto;padding:8px 0 40px}
 .document h2{font:400 var(--text-xl) var(--display);margin-bottom:12px;line-height:1.35}
 .document h3{margin:28px 0 10px;font-size:var(--text-lg)}
-.document p,.document li{line-height:1.85;color:var(--muted);word-break:keep-all}
+.document p,.document li{line-height:1.85;color:var(--muted);word-break:keep-all;overflow-wrap:break-word}
 .document p{margin:10px 0}
 .document code{background:var(--surface2);padding:1px 5px;border-radius:4px;font-family:var(--mono)}
 .document a{color:#6b7400}[data-theme=dark] .document a{color:#b4c03a}
@@ -231,7 +231,7 @@ th{background:var(--surface2);font-weight:700}
 .co-grid h4 small{font:500 var(--text-xs) var(--body);color:var(--muted)}
 .co-grid p{margin:4px 0;font-size:var(--text-xs);line-height:1.7}
 .co-grid q{display:block;font-size:var(--text-xs);color:var(--ink);margin-top:6px}
-.science-block{display:grid;grid-template-columns:48px 1fr;gap:12px;padding:18px 0;border-top:1px solid var(--line)}
+.science-block{display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;padding:18px 0;border-top:1px solid var(--line)}
 .science-block .index{font:500 var(--text-sm) var(--mono);color:var(--muted)}
 .science-block h3{margin:0 0 4px}
 .maker-note{margin-top:16px;padding:20px 0 8px;border-top:1px solid var(--line);max-width:850px}
